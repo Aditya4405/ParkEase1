@@ -2,7 +2,7 @@
 // api.js  —  ParkEase API client
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BASE = "http://localhost:8080/api";
+const BASE = "http:/a/localhost:8080/api";
 
 // ── Auth helpers ──────────────────────────────────────────────────────────────
 export const getToken    = () => localStorage.getItem("parkease_token");
