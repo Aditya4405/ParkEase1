@@ -222,40 +222,61 @@ public class ChatbotService {
     // ─── GROQ API CALL ───────────────────────────────────────────────────────
 
     private String callGroqApi(ArrayNode messages) throws Exception {
+        String[] candidateModels = new String[]{
+            groqModel,
+            "llama-3.1-8b-instant",
+            "gemma2-9b-it"
+        };
 
-        ObjectNode requestBody = objectMapper.createObjectNode();
-        requestBody.put("model", groqModel);
-        requestBody.set("messages", messages);
-        requestBody.put("temperature", 0.7);
-        requestBody.put("max_tokens", 1024);
+        Exception lastException = null;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(groqApiKey);
+        for (String modelName : candidateModels) {
+            if (modelName == null || modelName.isBlank()) continue;
 
-        HttpEntity<String> entity =
-                new HttpEntity<>(objectMapper.writeValueAsString(requestBody), headers);
+            try {
+                ObjectNode requestBody = objectMapper.createObjectNode();
+                requestBody.put("model", modelName);
+                requestBody.set("messages", messages);
+                requestBody.put("temperature", 0.7);
+                requestBody.put("max_tokens", 1024);
 
-        try {
-            ResponseEntity<String> response =
-                    restTemplate.exchange(GROQ_URL, HttpMethod.POST, entity, String.class);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setBearerAuth(groqApiKey);
 
-            JsonNode root = objectMapper.readTree(response.getBody());
-            return root.path("choices").get(0).path("message").path("content").asText();
+                HttpEntity<String> entity =
+                        new HttpEntity<>(objectMapper.writeValueAsString(requestBody), headers);
 
-        } catch (org.springframework.web.client.HttpClientErrorException e) {
-            int status = e.getStatusCode().value();
-            if (status == 401) {
-                throw new RuntimeException(
-                    "Groq API key is invalid or expired. Please update groq.api.key in application.properties. " +
-                    "Get a new key at https://console.groq.com/keys");
-            } else if (status == 429) {
-                throw new RuntimeException(
-                    "Groq API rate limit reached. Please wait a moment and try again.");
-            } else {
-                throw new RuntimeException("Groq API error (HTTP " + status + "): " + e.getResponseBodyAsString());
+                ResponseEntity<String> response =
+                        restTemplate.exchange(GROQ_URL, HttpMethod.POST, entity, String.class);
+
+                JsonNode root = objectMapper.readTree(response.getBody());
+                return root.path("choices").get(0).path("message").path("content").asText();
+
+            } catch (org.springframework.web.client.HttpClientErrorException e) {
+                int status = e.getStatusCode().value();
+                if (status == 401) {
+                    throw new RuntimeException(
+                        "Groq API key is invalid or expired. Please update groq.api.key in application.properties. " +
+                        "Get a new key at https://console.groq.com/keys");
+                } else if (status == 429) {
+                    throw new RuntimeException(
+                        "Groq API rate limit reached. Please wait a moment and try again.");
+                } else if (status == 404 || e.getResponseBodyAsString().contains("model_not_found")) {
+                    lastException = e;
+                    continue; // try next fallback model (e.g. llama-3.1-8b-instant)
+                } else {
+                    throw new RuntimeException("Groq API error (HTTP " + status + "): " + e.getResponseBodyAsString());
+                }
+            } catch (Exception ex) {
+                lastException = ex;
             }
         }
+
+        if (lastException != null) {
+            throw lastException;
+        }
+        throw new RuntimeException("Failed to call Groq API with all candidate models.");
     }
 
     // ─── RESPONSE PARSER + ACTION EXECUTOR ───────────────────────────────────
