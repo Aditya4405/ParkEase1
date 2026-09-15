@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaMobileAlt, FaCreditCard, FaWallet, FaLock,
-  FaCheckCircle, FaArrowLeft, FaShieldAlt,
+  FaCheckCircle, FaArrowLeft,
   FaParking, FaClock, FaRupeeSign, FaSpinner,
 } from "react-icons/fa";
 import { paymentsAPI } from "../../api/api";

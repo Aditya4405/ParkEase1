@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaRupeeSign, FaClock, FaParking, FaCheckCircle,
+  FaRupeeSign, FaCheckCircle,
   FaExclamationTriangle, FaBan, FaHistory, FaShieldAlt,
   FaSpinner, FaTimesCircle,
 } from "react-icons/fa";

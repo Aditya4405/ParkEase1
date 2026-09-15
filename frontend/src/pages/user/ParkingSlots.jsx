@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { FaCar, FaLock, FaBan, FaMotorcycle, FaTruck, FaSpinner, FaTimes, FaClock, FaRupeeSign } from "react-icons/fa";
+import { FaCar, FaBan, FaMotorcycle, FaTruck, FaSpinner, FaTimes, FaClock, FaRupeeSign } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { parkingsAPI, paymentsAPI } from "../../api/api";
 

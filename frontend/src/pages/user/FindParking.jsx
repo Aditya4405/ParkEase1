@@ -8,10 +8,10 @@ import { parkingsAPI, getUserName } from "../../api/api";
 
 export default function FindParking() {
   const navigate = useNavigate();
-  const [search, setSearch]       = useState("");
+  const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState([]);
-  const [parkings, setParkings]   = useState([]);
-  const [loading, setLoading]     = useState(true);
+  const [parkings, setParkings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const name = getUserName() || "User";
   const profile = { name, role: "USER" };
@@ -53,7 +53,7 @@ export default function FindParking() {
       <DashboardLayout role="USER" onSearch={setSearch} searchTerm={search} userInfo={profile}>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* LEFT: Listings */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center mb-4">
@@ -77,9 +77,8 @@ export default function FindParking() {
                   <motion.div
                     key={p.id}
                     whileHover={{ y: -5 }}
-                    className={`group relative bg-dark-card/60 backdrop-blur-xl rounded-xl p-6 border transition-all ${
-                      p.availableSlots > 0 ? "border-white/5 hover:border-neon-blue/30" : "border-neon-red/30 opacity-80"
-                    }`}
+                    className={`group relative bg-dark-card/60 backdrop-blur-xl rounded-xl p-6 border transition-all ${p.availableSlots > 0 ? "border-white/5 hover:border-neon-blue/30" : "border-neon-red/30 opacity-80"
+                      }`}
                   >
                     {/* Favorite */}
                     <button
@@ -96,9 +95,8 @@ export default function FindParking() {
                           <FaMapMarkerAlt className="text-neon-blue" /> {p.location}
                         </p>
                       </div>
-                      <div className={`px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap ${
-                        p.availableSlots > 0 ? "bg-neon-green/20 text-neon-green" : "bg-neon-red/20 text-neon-red"
-                      }`}>
+                      <div className={`px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap ${p.availableSlots > 0 ? "bg-neon-green/20 text-neon-green" : "bg-neon-red/20 text-neon-red"
+                        }`}>
                         {p.availableSlots > 0 ? `${p.availableSlots} Free` : "FULL"}
                       </div>
                     </div>
@@ -140,11 +138,10 @@ export default function FindParking() {
                     <button
                       disabled={p.availableSlots === 0}
                       onClick={() => navigate(`/user/slots/${p.id}`)}
-                      className={`mt-4 w-full py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
-                        p.availableSlots > 0
+                      className={`mt-4 w-full py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${p.availableSlots > 0
                           ? "bg-neon-blue hover:bg-neon-purple text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                           : "bg-gray-700 text-gray-400 cursor-not-allowed"
-                      }`}
+                        }`}
                     >
                       <FaCar /> {p.availableSlots > 0 ? "Book Now" : "Unavailable"}
                     </button>
@@ -163,16 +160,16 @@ export default function FindParking() {
                 <div className="absolute top-0 left-1/3 w-16 h-full bg-gray-800/40 -translate-x-1/2 border-x border-white/5 transform skew-x-12" />
                 <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-neon-blue/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
               </div>
-              
+
               <div className="absolute top-[40%] left-[35%] -translate-x-1/2 -translate-y-1/2 cursor-pointer group/marker">
                 <div className="relative">
                   <div className="w-4 h-4 bg-neon-green rounded-full shadow-[0_0_15px_#22c55e] z-10 relative border-2 border-white" />
                   <div className="absolute top-0 left-0 w-full h-full bg-neon-green rounded-full animate-ping opacity-75" />
                 </div>
               </div>
-              
+
               {filtered.slice(0, 3).map((p, i) => (
-                <div key={`map-marker-${p.id}`} className="absolute cursor-pointer" style={{ top: `${20 + i*25}%`, left: `${60 - i*10}%`}}>
+                <div key={`map-marker-${p.id}`} className="absolute cursor-pointer" style={{ top: `${20 + i * 25}%`, left: `${60 - i * 10}%` }}>
                   <div className="relative">
                     <div className="w-3 h-3 bg-neon-blue rounded-full shadow-[0_0_10px_#3b82f6] z-10 relative border-2 border-white" />
                   </div>
@@ -180,19 +177,21 @@ export default function FindParking() {
               ))}
 
               <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent pointer-events-none" />
-              
+
               <div className="relative z-10 h-full flex flex-col justify-end p-6">
                 <h4 className="text-xl font-bold text-white mb-1">Nearby Parking</h4>
                 <p className="text-sm text-gray-400 mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" /> Live Updates Active
                 </p>
-                <button className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-md border border-white/10 transition-all text-sm font-bold flex items-center justify-center gap-2">
+                <button
+                  onClick={() => window.open("https://www.google.com/maps", "_blank")}
+                  className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-md border border-white/10 transition-all text-sm font-bold flex items-center justify-center gap-2">
                   <FaMapMarkerAlt /> Open Map View
                 </button>
               </div>
             </div>
           </div>
-          
+
         </div>
       </DashboardLayout>
     </>
