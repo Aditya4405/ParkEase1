@@ -77,7 +77,7 @@ public class BookingService {
     public List<BookingResponse> getUserBookings(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return bookingRepository.findByUser(user)
+        return bookingRepository.findByUserWithDetails(user)
                 .stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
@@ -99,9 +99,9 @@ public class BookingService {
     public List<BookingResponse> getParkingBookings(Long parkingId, Long ownerId) {
         Parking parking = parkingRepository.findById(parkingId)
                 .orElseThrow(() -> new RuntimeException("Parking not found"));
-        if (!parking.getOwner().getId().equals(ownerId))
+        if (parking.getOwner() != null && !parking.getOwner().getId().equals(ownerId))
             throw new RuntimeException("Access denied");
-        return bookingRepository.findByParking(parking)
+        return bookingRepository.findByParkingWithDetails(parking)
                 .stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
@@ -110,7 +110,7 @@ public class BookingService {
         User owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Owner not found"));
         List<Parking> parkings = parkingRepository.findByOwner(owner);
-        return bookingRepository.findByParkingIn(parkings)
+        return bookingRepository.findByParkingInWithDetails(parkings)
                 .stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 

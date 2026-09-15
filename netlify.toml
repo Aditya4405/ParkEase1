@@ -1,0 +1,13 @@
+[build]
+  base = "frontend"
+  publish = "build"
+  command = "CI=false npm run build"
+
+[build.environment]
+  CI = "false"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

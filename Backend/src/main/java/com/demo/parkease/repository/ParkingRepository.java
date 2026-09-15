@@ -13,9 +13,17 @@ import java.util.Optional;
 @Repository
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
 
-    // ── JOIN FETCH versions — eagerly loads slots in ONE SQL query ────────────
-    // Fixes: LazyInitializationException on Parking.slots outside a transaction
+    // ── High-Performance JOIN FETCH queries to eliminate N+1 round trips ─────
+    @Query("SELECT DISTINCT p FROM Parking p LEFT JOIN FETCH p.owner LEFT JOIN FETCH p.slots")
+    List<Parking> findAllWithOwnerAndSlots();
 
+    @Query("SELECT DISTINCT p FROM Parking p LEFT JOIN FETCH p.owner LEFT JOIN FETCH p.slots WHERE p.id = :id")
+    Optional<Parking> findByIdWithOwnerAndSlots(@Param("id") Long id);
+
+    @Query("SELECT DISTINCT p FROM Parking p LEFT JOIN FETCH p.owner LEFT JOIN FETCH p.slots WHERE p.owner = :owner")
+    List<Parking> findByOwnerWithOwnerAndSlots(@Param("owner") User owner);
+
+    // ── JOIN FETCH versions — eagerly loads slots in ONE SQL query ────────────
     @Query("SELECT DISTINCT p FROM Parking p LEFT JOIN FETCH p.slots WHERE p.owner = :owner")
     List<Parking> findByOwnerWithSlots(@Param("owner") User owner);
 

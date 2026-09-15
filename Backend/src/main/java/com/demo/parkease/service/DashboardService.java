@@ -47,7 +47,7 @@ public class DashboardService {
 
         List<Booking> allBookings = parkings.isEmpty() ?
                 java.util.Collections.emptyList() :
-                bookingRepository.findByParkingIn(parkings);
+                bookingRepository.findByParkingInWithDetails(parkings);
 
         List<ParkingSlot> allSlots = parkings.stream()
                 .flatMap(p -> p.getSlots().stream())
@@ -98,7 +98,7 @@ public class DashboardService {
         }
         List<Booking> completed = parkings.isEmpty() ?
                 java.util.Collections.emptyList() :
-                bookingRepository.findByParkingIn(parkings).stream()
+                bookingRepository.findByParkingInWithDetails(parkings).stream()
                         .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
                         .toList();
 
