@@ -3,7 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaMoneyBillWave, FaExchangeAlt, FaParking, FaCar,
-  FaArrowUp, FaFileDownload, FaUser, FaSyncAlt, FaExclamationTriangle
+  FaArrowUp, FaUser, FaSyncAlt, FaExclamationTriangle
 } from "react-icons/fa";
 import { api } from "../../api/api";
 import { CardSkeleton, TableSkeleton } from "../../components/common/Skeleton";

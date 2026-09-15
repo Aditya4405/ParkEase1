@@ -46,7 +46,8 @@ const statusBadge = (value) => {
 };
 
 export default function ParkingDetailsModal({ parking, complaints = [], onClose, onStatusChange }) {
-    const slots = parking?.slots || [];
+    const rawSlots = parking?.slots;
+    const slots = useMemo(() => rawSlots || [], [rawSlots]);
 
     const stats = useMemo(() => {
         const occupied = slots.filter((s) => s.status === "OCCUPIED").length;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaSearch, FaTimes, FaSpinner, FaEye,
+  FaSearch, FaTimes, FaEye,
   FaExclamationTriangle, FaMapMarkerAlt, FaUser, FaSyncAlt
 } from "react-icons/fa";
 import { api } from "../../api/api";
@@ -63,7 +63,6 @@ export default function ParkingManagement() {
       p.ownerName?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const fmtMoney = (n) => `₹${(n || 0).toLocaleString("en-IN")}`;
 
   return (
     <DashboardLayout role="ADMIN">

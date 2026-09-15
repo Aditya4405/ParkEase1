@@ -2,8 +2,8 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaFileAlt, FaFileDownload, FaUsers, FaParking, FaHistory,
-  FaMoneyBillWave, FaExchangeAlt, FaHeartbeat, FaSpinner
+  FaFileDownload, FaUsers, FaParking, FaHistory,
+  FaExchangeAlt, FaSpinner
 } from "react-icons/fa";
 import { api } from "../../api/api";
 

@@ -373,7 +373,7 @@ export default function LandingPage() {
         <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
           <a href="#features" className="nav-link" style={{ display: typeof window !== 'undefined' && window.innerWidth > 640 ? "block" : "none" }}>Features</a>
           <a href="#how-it-works" className="nav-link" style={{ display: typeof window !== 'undefined' && window.innerWidth > 640 ? "block" : "none" }}>How it Works</a>
-          <a className="nav-link" style={{ display: typeof window !== 'undefined' && window.innerWidth > 640 ? "block" : "none" }}>Pricing</a>
+          <a href="#pricing" className="nav-link" style={{ display: typeof window !== 'undefined' && window.innerWidth > 640 ? "block" : "none" }}>Pricing</a>
           <a href="/login" className="btn-secondary" style={{ padding: "9px 22px", fontSize: 13 }}>Log In</a>
           <a href="/register" className="btn-primary" style={{ padding: "9px 22px", fontSize: 13 }}>Get Started</a>
         </div>
@@ -670,7 +670,7 @@ export default function LandingPage() {
 
         <div style={{ display: "flex", gap: 28 }}>
           {["Privacy", "Terms", "Support", "Contact"].map(l => (
-            <a key={l} className="nav-link" style={{ fontSize: 13 }}>{l}</a>
+            <a key={l} href={`#${l.toLowerCase()}`} className="nav-link" style={{ fontSize: 13 }}>{l}</a>
           ))}
         </div>
 

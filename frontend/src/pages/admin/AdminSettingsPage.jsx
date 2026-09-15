@@ -2,8 +2,7 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaCog, FaMoon, FaSun, FaDesktop, FaBell, FaShieldAlt,
-  FaCheckCircle, FaSave
+  FaMoon, FaSun, FaDesktop, FaSave
 } from "react-icons/fa";
 import { useTheme } from "../../context/ThemeContext";
 

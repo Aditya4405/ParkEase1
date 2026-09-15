@@ -8,7 +8,7 @@ import { api } from "../../api/api";
 
 export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }) {
   const navigate = useNavigate();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState(null);

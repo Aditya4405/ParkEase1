@@ -3,7 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaSearch, FaTimes, FaCar, FaMotorcycle,
-  FaTimesCircle, FaCheckCircle, FaSyncAlt, FaExclamationTriangle
+  FaSyncAlt, FaExclamationTriangle
 } from "react-icons/fa";
 import { api } from "../../api/api";
 import { TableSkeleton } from "../../components/common/Skeleton";

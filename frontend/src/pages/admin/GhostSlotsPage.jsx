@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaExclamationTriangle, FaWrench, FaCheckCircle, FaSpinner,
-  FaShieldAlt, FaSyncAlt, FaCar
+  FaExclamationTriangle, FaCheckCircle, FaSyncAlt
 } from "react-icons/fa";
 import { api } from "../../api/api";
 

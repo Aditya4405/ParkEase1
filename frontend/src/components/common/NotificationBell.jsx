@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaBell, FaTimes, FaCheckDouble } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -9,12 +9,10 @@ export default function NotificationBell({ isAdmin }) {
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState("ALL");
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (isAdmin) {
       try {
-        setLoading(true);
         const data = await api.get("/admin/notifications");
         if (Array.isArray(data) && data.length > 0) {
           setNotifications(data);
@@ -23,17 +21,26 @@ export default function NotificationBell({ isAdmin }) {
           setNotifications([
             {
               id: 1,
-              type: "WARNING",
+              type: "ALERT",
               title: "High Occupancy Warning",
-              message: "City Center Parking reached 92% occupancy.",
-              createdAt: new Date(Date.now() - 15 * 60000).toISOString(),
+              message: "Cyber Hub Parking is at 95% capacity.",
+              createdAt: new Date(Date.now() - 10 * 60000).toISOString(),
               read: false,
               targetUrl: "/admin/live-parking"
             },
             {
               id: 2,
+              type: "WARNING",
+              title: "Ghost Slot Detected",
+              message: "Slot #B-12 has been occupied without active booking.",
+              createdAt: new Date(Date.now() - 25 * 60000).toISOString(),
+              read: false,
+              targetUrl: "/admin/ghost-slots"
+            },
+            {
+              id: 3,
               type: "INFO",
-              title: "System Backup Completed",
+              title: "Daily Backup Finished",
               message: "Automated daily snapshot completed successfully.",
               createdAt: new Date(Date.now() - 60 * 60000).toISOString(),
               read: true,
@@ -43,8 +50,6 @@ export default function NotificationBell({ isAdmin }) {
         }
       } catch (err) {
         console.error("Failed to load notifications:", err);
-      } finally {
-        setLoading(false);
       }
     } else {
       setNotifications([
@@ -58,11 +63,11 @@ export default function NotificationBell({ isAdmin }) {
         }
       ]);
     }
-  };
+  }, [isAdmin]);
 
   useEffect(() => {
     fetchNotifications();
-  }, [isAdmin]);
+  }, [fetchNotifications]);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 

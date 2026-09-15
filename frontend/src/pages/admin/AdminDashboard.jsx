@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaUsers, FaParking, FaMoneyBillWave, FaCar,
-  FaCheckCircle, FaTimesCircle, FaSyncAlt, FaFileDownload,
-  FaExclamationTriangle, FaShieldAlt, FaChartLine, FaArrowUp,
-  FaChevronRight, FaHeartbeat
+  FaCheckCircle, FaSyncAlt, FaFileDownload,
+  FaExclamationTriangle, FaShieldAlt, FaArrowUp,
+  FaChevronRight
 } from "react-icons/fa";
 import { api } from "../../api/api";
 import { CardSkeleton, TableSkeleton } from "../../components/common/Skeleton";

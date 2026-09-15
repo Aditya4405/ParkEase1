@@ -4,10 +4,9 @@ import {
   FaCar, FaHistory, FaUsers, FaChartBar, FaChartLine, FaFileAlt,
   FaCog, FaSignOutAlt, FaLock, FaWallet, FaPlus, FaParking, FaMoneyBillWave,
   FaExclamationTriangle, FaMapMarkerAlt, FaExchangeAlt, FaUndo,
-  FaHeartbeat, FaWrench, FaBell, FaClipboardList, FaLayerGroup, FaUserCheck
+  FaHeartbeat, FaWrench, FaBell, FaClipboardList
 } from "react-icons/fa";
 import { ownerParkingsAPI } from "../../api/api";
-import { useTheme } from "../../context/ThemeContext";
 
 const linkClass = ({ isActive }) =>
   `flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-xs font-semibold ${
@@ -21,7 +20,6 @@ const plainClass =
 
 export default function Sidebar({ role }) {
   const navigate = useNavigate();
-  const { resolvedTheme } = useTheme();
   const [parkings, setParkings] = useState([]);
 
   useEffect(() => {
@@ -31,12 +29,6 @@ export default function Sidebar({ role }) {
         .catch(err => console.error("Sidebar parking fetch error:", err));
     }
   }, [role]);
-
-  const settingsRoute = role === "OWNER"
-    ? "/owner/settings"
-    : role === "ADMIN"
-      ? "/admin/settings"
-      : "/user/settings";
 
   return (
     <aside className="w-64 flex flex-col fixed left-0 top-0 h-full bg-[#0d1527] border-r border-white/10 z-30 select-none">

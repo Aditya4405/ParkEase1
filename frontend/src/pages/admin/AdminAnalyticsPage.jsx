@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
-  FaChartLine, FaCar, FaMoneyBillWave, FaClock,
-  FaSpinner, FaHistory, FaCalendarAlt
+  FaChartLine, FaCar, FaClock
 } from "react-icons/fa";
 import { api } from "../../api/api";
 
@@ -14,7 +13,7 @@ export default function AdminAnalyticsPage() {
 
   const [error, setError] = useState(null);
 
-  const fetchAnalytics = async (r) => {
+  const fetchAnalytics = useCallback(async (r) => {
     try {
       setLoading(true);
       setError(null);
@@ -26,11 +25,11 @@ export default function AdminAnalyticsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [range]);
 
   useEffect(() => {
     fetchAnalytics(range);
-  }, [range]);
+  }, [range, fetchAnalytics]);
 
   const fmtMoney = (n) => `₹${(n || 0).toLocaleString("en-IN")}`;
 
@@ -50,6 +49,21 @@ export default function AdminAnalyticsPage() {
           <p className="text-xs text-gray-400 mt-1">
             Historical demand curves, peak parking rush hours, and vehicle segmentation
           </p>
+        </div>
+        <div className="flex gap-2">
+          {["7d", "30d", "90d"].map((r) => (
+            <button
+              key={r}
+              onClick={() => setRange(r)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                range === r
+                  ? "bg-neon-blue text-white shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                  : "bg-white/5 hover:bg-white/10 text-gray-400"
+              }`}
+            >
+              {r.toUpperCase()}
+            </button>
+          ))}
         </div>
       </div>
 
