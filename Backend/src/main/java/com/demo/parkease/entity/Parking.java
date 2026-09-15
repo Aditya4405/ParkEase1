@@ -15,7 +15,9 @@ import java.util.List;
  *   id, name, location, description, owner_id, created_at
  */
 @Entity
-@Table(name = "parkings")
+@Table(name = "parkings", indexes = {
+    @Index(name = "idx_parking_owner", columnList = "owner_id")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

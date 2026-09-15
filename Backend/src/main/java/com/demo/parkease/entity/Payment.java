@@ -24,7 +24,13 @@ import java.time.LocalDateTime;
  *   On failure → status = FAILED
  */
 @Entity
-@Table(name = "payments")
+@Table(name = "payments", indexes = {
+    @Index(name = "idx_payment_booking", columnList = "booking_id"),
+    @Index(name = "idx_payment_status", columnList = "status"),
+    @Index(name = "idx_payment_type", columnList = "type"),
+    @Index(name = "idx_payment_created_at", columnList = "created_at"),
+    @Index(name = "idx_payment_txn_id", columnList = "transaction_id")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -28,7 +28,7 @@ public class UserDashboardService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Booking> all = bookingRepository.findByUser(user);
+        List<Booking> all = bookingRepository.findByUserWithDetails(user);
 
         int total     = all.size();
         int active    = (int) all.stream().filter(b -> b.getStatus() == BookingStatus.ACTIVE).count();

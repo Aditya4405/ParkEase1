@@ -2,18 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-surface: #0f1629;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-elevated: rgba(255, 255, 255, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --brand-blue: #3b82f6;
+  --brand-purple: #a855f7;
+  --brand-green: #22c55e;
+  --brand-red: #ef4444;
+  --brand-amber: #f59e0b;
+}
+
+[data-theme="light"], .light {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-surface: #f1f5f9;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-elevated: rgba(0, 0, 0, 0.14);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
 @layer base {
   body {
-    @apply bg-dark-bg text-white font-sans;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-glass;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
   }
   .glass-card {
-    @apply bg-dark-card/60 backdrop-blur-xl border border-white/10 shadow-xl;
+    background-color: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+  .theme-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+  }
+  .theme-border {
+    border-color: var(--border-subtle);
   }
   .text-shadow-neon {
     text-shadow: 0 0 10px currentColor;

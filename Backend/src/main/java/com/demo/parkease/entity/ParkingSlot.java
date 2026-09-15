@@ -13,7 +13,12 @@ import lombok.*;
  * Note: DB column is `slot_status` (not `status`) — mapped with @Column(name=...)
  */
 @Entity
-@Table(name = "parking_slots")
+@Table(name = "parking_slots", indexes = {
+    @Index(name = "idx_slot_parking", columnList = "parking_id"),
+    @Index(name = "idx_slot_status", columnList = "status"),
+    @Index(name = "idx_slot_disabled", columnList = "disabled"),
+    @Index(name = "idx_slot_vehicle_type", columnList = "vehicle_type")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

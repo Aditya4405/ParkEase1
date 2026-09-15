@@ -21,7 +21,14 @@ import java.util.List;
  *   CANCELLED→ abandoned checkout or owner/user cancel (slot = AVAILABLE)
  */
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings", indexes = {
+    @Index(name = "idx_booking_user", columnList = "user_id"),
+    @Index(name = "idx_booking_parking", columnList = "parking_id"),
+    @Index(name = "idx_booking_slot", columnList = "slot_id"),
+    @Index(name = "idx_booking_status", columnList = "status"),
+    @Index(name = "idx_booking_created_at", columnList = "created_at"),
+    @Index(name = "idx_booking_end_time", columnList = "end_time")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
