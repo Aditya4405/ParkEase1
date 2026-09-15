@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService,
-                          JwtAuthFilter jwtAuthFilter) {
+            JwtAuthFilter jwtAuthFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -55,7 +55,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://park-ease1-eight.vercel.app"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowCredentials(true);
@@ -70,20 +70,20 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement(session
+                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/owner/parkings/debug").permitAll()
-                        .requestMatchers("/api/owner/**").hasAuthority("ROLE_OWNER")
-                        .requestMatchers("/api/user/parkings/**").hasAuthority("ROLE_USER")
-                        .requestMatchers("/api/user/bookings/**").hasAuthority("ROLE_USER")
-                        .requestMatchers("/api/user/dashboard/**").hasAuthority("ROLE_USER")
-                        .requestMatchers("/api/user/payments/**").hasAuthority("ROLE_USER") // ← ADDED
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/chat/**").authenticated()   // ← Chatbot: any logged-in user
-                        .anyRequest().authenticated()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/owner/parkings/debug").permitAll()
+                .requestMatchers("/api/owner/**").hasAuthority("ROLE_OWNER")
+                .requestMatchers("/api/user/parkings/**").hasAuthority("ROLE_USER")
+                .requestMatchers("/api/user/bookings/**").hasAuthority("ROLE_USER")
+                .requestMatchers("/api/user/dashboard/**").hasAuthority("ROLE_USER")
+                .requestMatchers("/api/user/payments/**").hasAuthority("ROLE_USER") // ← ADDED
+                .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/chat/**").authenticated() // ← Chatbot: any logged-in user
+                .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter,
