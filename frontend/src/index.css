@@ -3,30 +3,40 @@
 @tailwind utilities;
 
 :root {
-  --bg-main: #0f172a;
-  --bg-card: #1e293b;
-  --bg-surface: #0f1629;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-elevated: rgba(255, 255, 255, 0.15);
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* Default: Light Mode (matches new ParkEase Landing Page) */
+  --bg-main: #fafafa;
+  --bg-surface: #f8fafc;
+  --bg-card: #ffffff;
+  --border-subtle: #f1f5f9;
+  --border-elevated: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  /* ParkEase Accent Tokens */
+  --brand-primary: #5b4df5;
+  --brand-primary-hover: #4f41e5;
+  --brand-lavender: #eef2ff;
+  --brand-lavender-subtle: #f5f3ff;
   --brand-blue: #3b82f6;
-  --brand-purple: #a855f7;
-  --brand-green: #22c55e;
+  --brand-green: #10b981;
   --brand-red: #ef4444;
   --brand-amber: #f59e0b;
 }
 
-[data-theme="light"], .light {
-  --bg-main: #f8fafc;
-  --bg-card: #ffffff;
-  --bg-surface: #f1f5f9;
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-elevated: rgba(0, 0, 0, 0.14);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+[data-theme="dark"], .dark {
+  /* Dark Mode: Deep Navy SaaS (matches landing page dark theme) */
+  --bg-main: #0b1120;
+  --bg-surface: #0e1726;
+  --bg-card: #131c31;
+  --border-subtle: #1e293b;
+  --border-elevated: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --brand-lavender: rgba(91, 77, 245, 0.15);
+  --brand-lavender-subtle: rgba(91, 77, 245, 0.08);
 }
 
 @layer base {
@@ -36,29 +46,131 @@
     font-family: 'Inter', sans-serif;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
 }
 
 @layer utilities {
-  .glass {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-subtle);
+  .font-handwriting {
+    font-family: 'Caveat', cursive;
   }
-  .glass-card {
-    background-color: var(--bg-card);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border-subtle);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  .font-heading {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   }
-  .theme-card {
+
+  /* ParkEase SaaS Card */
+  .parkease-card {
     background-color: var(--bg-card);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-elevated);
     border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
   }
-  .theme-border {
-    border-color: var(--border-subtle);
+  .parkease-card-hover:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    border-color: rgba(91, 77, 245, 0.3);
   }
-  .text-shadow-neon {
-    text-shadow: 0 0 10px currentColor;
+
+  /* ParkEase Buttons */
+  .parkease-btn-primary {
+    background-color: #5b4df5;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 14px 0 rgba(91, 77, 245, 0.25);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .parkease-btn-primary:hover {
+    background-color: #4f41e5;
+    box-shadow: 0 6px 20px 0 rgba(91, 77, 245, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .parkease-btn-secondary {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-elevated);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .parkease-btn-secondary:hover {
+    background-color: var(--brand-lavender);
+    color: #5b4df5;
+    border-color: rgba(91, 77, 245, 0.3);
+  }
+
+  /* ParkEase Form Input */
+  .parkease-input {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-elevated);
+    color: var(--text-primary);
+    border-radius: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+  .parkease-input:focus {
+    border-color: #5b4df5;
+    box-shadow: 0 0 0 3px rgba(91, 77, 245, 0.15);
+  }
+
+  /* ParkEase Badges */
+  .badge-success {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+  }
+  .dark .badge-success {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+
+  .badge-warning {
+    background-color: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fef3c7;
+  }
+  .dark .badge-warning {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+
+  .badge-error {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+  }
+  .dark .badge-error {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+
+  .badge-purple {
+    background-color: #eef2ff;
+    color: #5b4df5;
+    border: 1px solid #e0e7ff;
+  }
+  .dark .badge-purple {
+    background-color: rgba(91, 77, 245, 0.15);
+    color: #818cf8;
+    border-color: rgba(91, 77, 245, 0.25);
   }
 }
+
