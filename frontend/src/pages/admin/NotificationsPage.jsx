@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaCheckCircle, FaExclamationTriangle, FaInfoCircle,
@@ -53,12 +53,12 @@ export default function NotificationsPage() {
     switch (type) {
       case "CRITICAL":
       case "WARNING":
-        return <FaExclamationTriangle className="text-amber-400" />;
+        return <FaExclamationTriangle className="text-amber-500" />;
       case "SUCCESS":
-        return <FaCheckCircle className="text-neon-green" />;
+        return <FaCheckCircle className="text-emerald-500" />;
       case "INFO":
       default:
-        return <FaInfoCircle className="text-neon-blue" />;
+        return <FaInfoCircle className="text-primary-600 dark:text-primary-400" />;
     }
   };
 
@@ -73,13 +73,11 @@ export default function NotificationsPage() {
 
   return (
     <DashboardLayout role="ADMIN">
-      <ToastContainer theme="dark" position="top-right" autoClose={3000} />
-
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-black text-white">System Notification Center</h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">System Notification Center</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Platform alerts, capacity warnings, payment notices, and infrastructure reports
           </p>
         </div>
@@ -87,7 +85,7 @@ export default function NotificationsPage() {
         {notifications.some((n) => !n.read) && (
           <button
             onClick={markAllAsRead}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-neon-blue font-bold text-xs transition-colors"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all cursor-pointer"
           >
             <FaCheckDouble size={11} /> Mark All as Read
           </button>
@@ -95,15 +93,15 @@ export default function NotificationsPage() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-6 flex-wrap">
         {["ALL", "CRITICAL", "WARNING", "INFO"].map((tab) => (
           <button
             key={tab}
             onClick={() => setFilter(tab)}
-            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
               filter === tab
-                ? "bg-neon-blue/20 text-neon-blue border border-neon-blue/40"
-                : "bg-[#1e293b] text-gray-400 border border-white/10 hover:text-white"
+                ? "bg-primary-600 text-white shadow-xs"
+                : "bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
             }`}
           >
             {tab}
@@ -114,15 +112,15 @@ export default function NotificationsPage() {
       {/* Notification List */}
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24 gap-3">
-          <FaSpinner className="text-neon-blue text-3xl animate-spin" />
-          <p className="text-xs text-gray-400">Loading alerts...</p>
+          <FaSpinner className="text-primary-600 text-3xl animate-spin" />
+          <p className="text-xs text-slate-400">Loading alerts...</p>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#1e293b] border border-white/10 rounded-2xl p-12 text-center text-gray-400 text-xs">
+        <div className="parkease-card rounded-2xl p-12 text-center text-slate-400 text-xs shadow-sm">
           No notifications found in this category.
         </div>
       ) : (
-        <div className="bg-[#1e293b] border border-white/10 rounded-2xl divide-y divide-white/5 overflow-hidden shadow-xl">
+        <div className="parkease-card rounded-2xl divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden shadow-sm">
           {filtered.map((n) => (
             <div
               key={n.id}
@@ -130,30 +128,30 @@ export default function NotificationsPage() {
                 markAsRead(n.id);
                 if (n.targetUrl) navigate(n.targetUrl);
               }}
-              className={`p-4 flex items-start gap-4 hover:bg-white/[0.02] transition-colors cursor-pointer ${
-                !n.read ? "bg-white/[0.03]" : ""
+              className={`p-4 flex items-start gap-4 hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors cursor-pointer ${
+                !n.read ? "bg-primary-50/30 dark:bg-primary-950/20" : ""
               }`}
             >
-              <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-9 h-9 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
                 {getIcon(n.type)}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className={`text-xs font-bold ${!n.read ? "text-white" : "text-gray-300"}`}>
+                  <h3 className={`text-xs font-bold ${!n.read ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-slate-300"}`}>
                     {n.title}
                   </h3>
-                  <span className="text-[11px] text-gray-500 flex-shrink-0">
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500 flex-shrink-0">
                     {fmtTime(n.createdAt)}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                   {n.message}
                 </p>
               </div>
 
               {!n.read && (
-                <span className="w-2 h-2 rounded-full bg-neon-blue flex-shrink-0 mt-2" />
+                <span className="w-2 h-2 rounded-full bg-primary-600 flex-shrink-0 mt-2" />
               )}
             </div>
           ))}

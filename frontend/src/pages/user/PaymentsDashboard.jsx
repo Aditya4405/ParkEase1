@@ -12,18 +12,18 @@ import { toast, ToastContainer } from "react-toastify";
 
 function StatusBadge({ status }) {
   const map = {
-    SUCCESS: "bg-neon-green/20 text-neon-green border-neon-green/30",
-    PAID:    "bg-neon-green/20 text-neon-green border-neon-green/30",
-    ACTIVE:  "bg-neon-blue/20  text-neon-blue  border-neon-blue/30",
-    PENDING: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-    PAYMENT_PENDING: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-    FAILED:  "bg-neon-red/20   text-neon-red   border-neon-red/30",
-    SUSPENDED: "bg-neon-red/20 text-neon-red   border-neon-red/30",
-    CANCELLED: "bg-neon-red/20 text-neon-red   border-neon-red/30",
-    COMPLETED: "bg-neon-green/20 text-neon-green border-neon-green/30",
+    SUCCESS: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60",
+    PAID:    "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60",
+    ACTIVE:  "bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-400 border-primary-200 dark:border-primary-800/60",
+    PENDING: "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/60",
+    PAYMENT_PENDING: "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/60",
+    FAILED:  "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/60",
+    SUSPENDED: "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/60",
+    CANCELLED: "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/60",
+    COMPLETED: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60",
   };
   return (
-    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${map[status] || map.PENDING}`}>
+    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${map[status] || map.PENDING}`}>
       {status}
     </span>
   );
@@ -32,8 +32,8 @@ function StatusBadge({ status }) {
 function Section({ title, icon, children }) {
   return (
     <div className="mb-8">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-        <span className="text-neon-blue">{icon}</span> {title}
+      <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+        <span className="text-primary-600 dark:text-primary-400">{icon}</span> {title}
       </h3>
       {children}
     </div>
@@ -119,12 +119,12 @@ export default function PaymentsDashboard() {
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-right" autoClose={3000} style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
       <DashboardLayout role="USER">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h2 className="text-3xl font-black text-white mb-1">Payments</h2>
-            <p className="text-gray-400 text-sm">Your parking financial overview</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Payments & Invoices</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Manage transaction history, account status, and dues</p>
           </div>
 
           {/* ── Account Status Banner ─────────────────────────── */}
@@ -132,22 +132,26 @@ export default function PaymentsDashboard() {
             {isBlocked && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className={`mb-8 p-5 rounded-2xl border flex items-start gap-4 ${
-                  accountStatus === "SUSPENDED" ? "bg-neon-red/10 border-neon-red/40" : "bg-yellow-500/10 border-yellow-500/30"
+                className={`mb-8 p-5 rounded-2xl border flex items-start gap-4 shadow-sm ${
+                  accountStatus === "SUSPENDED" 
+                    ? "bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60" 
+                    : "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60"
                 }`}
               >
-                <FaBan className={`text-2xl shrink-0 mt-0.5 ${accountStatus === "SUSPENDED" ? "text-neon-red" : "text-yellow-400"}`} />
+                <div className={`p-2.5 rounded-xl ${accountStatus === "SUSPENDED" ? "bg-rose-100 dark:bg-rose-900/60 text-rose-600" : "bg-amber-100 dark:bg-amber-900/60 text-amber-600"}`}>
+                  <FaBan className="text-xl" />
+                </div>
                 <div className="flex-1">
-                  <p className={`font-black text-sm uppercase tracking-wide ${accountStatus === "SUSPENDED" ? "text-neon-red" : "text-yellow-400"}`}>
-                    {accountStatus === "SUSPENDED" ? "Account Suspended" : "Payment Pending — Bookings Blocked"}
+                  <p className={`font-bold text-sm uppercase tracking-wide ${accountStatus === "SUSPENDED" ? "text-rose-700 dark:text-rose-300" : "text-amber-700 dark:text-amber-300"}`}>
+                    {accountStatus === "SUSPENDED" ? "Account Suspended" : "Payment Pending — Bookings Paused"}
                   </p>
-                  <p className="text-gray-400 text-xs mt-1">
+                  <p className="text-slate-600 dark:text-slate-400 text-xs mt-1">
                     {accountStatus === "SUSPENDED"
-                      ? "Your account has been suspended due to 48h+ unpaid dues. Clear dues to restore access."
-                      : `You have an outstanding payment of ₹${outstanding}. Clear dues to make new bookings.`}
+                      ? "Your account has been suspended due to 48h+ unpaid dues. Clear dues to restore booking access immediately."
+                      : `You have an outstanding payment balance of ₹${outstanding}. Clear dues to enable new parking reservations.`}
                   </p>
                 </div>
-                <button onClick={clearDues} className="px-4 py-2 bg-neon-blue text-white rounded-xl font-bold text-sm hover:bg-blue-500 transition-all whitespace-nowrap">
+                <button onClick={clearDues} className="px-4 py-2.5 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 shadow-sm transition-all whitespace-nowrap">
                   Pay ₹{outstanding}
                 </button>
               </motion.div>
@@ -155,22 +159,22 @@ export default function PaymentsDashboard() {
           </AnimatePresence>
 
           {/* ── Account Status Card ─────────────────────────── */}
-          <Section title="Account Status" icon={<FaShieldAlt />}>
-            <div className="bg-dark-card/60 border border-white/5 rounded-2xl p-6 flex items-center justify-between">
+          <Section title="Account Standing" icon={<FaShieldAlt />}>
+            <div className="parkease-card rounded-2xl p-6 flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-full border-2 flex items-center justify-center ${
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl ${
                   isBlocked
-                    ? "bg-neon-red/10 border-neon-red/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
-                    : "bg-neon-green/10 border-neon-green/40 shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+                    ? "bg-rose-50 dark:bg-rose-950/50 text-rose-600 border border-rose-200 dark:border-rose-800/60"
+                    : "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 border border-emerald-200 dark:border-emerald-800/60"
                 }`}>
-                  {isBlocked ? <FaBan className="text-neon-red text-xl" /> : <FaShieldAlt className="text-neon-green text-xl" />}
+                  {isBlocked ? <FaBan /> : <FaShieldAlt />}
                 </div>
                 <div>
-                  <p className={`font-black text-lg ${isBlocked ? "text-neon-red" : "text-neon-green"}`}>
-                    {accountStatus === "SUSPENDED" ? "SUSPENDED" : accountStatus === "PAYMENT_PENDING" ? "PAYMENT PENDING" : "ACTIVE"}
+                  <p className={`font-bold text-base ${isBlocked ? "text-rose-600 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400"}`}>
+                    {accountStatus === "SUSPENDED" ? "SUSPENDED" : accountStatus === "PAYMENT_PENDING" ? "PAYMENT PENDING" : "GOOD STANDING"}
                   </p>
-                  <p className="text-gray-500 text-xs">
-                    {isBlocked ? `${warnings.length}/5 warnings issued` : "All dues cleared · Bookings enabled"}
+                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+                    {isBlocked ? `${warnings.length}/5 warnings issued` : "All dues settled · Unrestricted booking access"}
                   </p>
                 </div>
               </div>
@@ -180,17 +184,17 @@ export default function PaymentsDashboard() {
 
           {/* ── Stats Cards ─────────────────────────────────── */}
           {stats && (
-            <Section title="Summary" icon={<FaRupeeSign />}>
+            <Section title="Financial Summary" icon={<FaRupeeSign />}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: "Total Bookings",  value: stats.totalBookings,     color: "text-neon-blue" },
-                  { label: "Completed",       value: stats.completedBookings, color: "text-neon-green" },
-                  { label: "Active",          value: stats.activeBookings,    color: "text-yellow-400" },
-                  { label: "Total Spent",     value: `₹${totalSpent.toFixed(0)}`, color: "text-neon-purple" },
+                  { label: "Total Bookings",  value: stats.totalBookings,     color: "text-primary-600 dark:text-primary-400" },
+                  { label: "Completed",       value: stats.completedBookings, color: "text-emerald-600 dark:text-emerald-400" },
+                  { label: "Active Sessions", value: stats.activeBookings,    color: "text-amber-600 dark:text-amber-400" },
+                  { label: "Total Paid",      value: `₹${totalSpent.toFixed(0)}`, color: "text-slate-900 dark:text-white" },
                 ].map(s => (
-                  <div key={s.label} className="bg-dark-card/60 border border-white/5 rounded-2xl p-4 text-center">
-                    <p className={`font-black text-2xl ${s.color}`}>{s.value}</p>
-                    <p className="text-gray-500 text-xs mt-1 uppercase">{s.label}</p>
+                  <div key={s.label} className="parkease-card rounded-2xl p-5 text-center shadow-sm">
+                    <p className={`font-bold text-2xl tracking-tight ${s.color}`}>{s.value}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold mt-1 uppercase tracking-wider">{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -200,19 +204,19 @@ export default function PaymentsDashboard() {
           {/* ── Outstanding Dues ─────────────────────────────── */}
           {isBlocked && (
             <Section title="Outstanding Dues" icon={<FaExclamationTriangle />}>
-              <div className="bg-dark-card/60 border border-neon-red/20 rounded-2xl p-5 flex items-center justify-between">
+              <div className="parkease-card border-rose-200 dark:border-rose-900/50 rounded-2xl p-5 flex items-center justify-between shadow-sm">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-neon-red/10 border border-neon-red/30 flex items-center justify-center">
-                    <FaTimesCircle className="text-neon-red" />
+                  <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 flex items-center justify-center">
+                    <FaTimesCircle className="text-lg" />
                   </div>
                   <div>
-                    <p className="text-white font-semibold text-sm">Unpaid Overtime Penalty</p>
-                    <p className="text-gray-400 text-xs">Includes base + overtime penalty</p>
+                    <p className="text-slate-900 dark:text-white font-semibold text-sm">Unpaid Overtime Penalty</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs">Includes overtime parking penalty charges</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-neon-red font-black text-xl">₹{outstanding}</span>
-                  <button onClick={clearDues} className="px-4 py-2 bg-neon-red text-white rounded-xl font-bold text-sm hover:bg-red-500 transition-all">
+                <div className="flex items-center gap-4">
+                  <span className="text-rose-600 dark:text-rose-400 font-bold text-xl">₹{outstanding}</span>
+                  <button onClick={clearDues} className="px-4 py-2 bg-rose-600 text-white rounded-xl font-bold text-xs hover:bg-rose-700 transition-all shadow-sm">
                     Pay Now
                   </button>
                 </div>
@@ -221,32 +225,32 @@ export default function PaymentsDashboard() {
           )}
 
           {/* ── Payment History ─────────────────────────────── */}
-          <Section title="Payment History" icon={<FaHistory />}>
+          <Section title="Transaction Receipts" icon={<FaHistory />}>
             {loading ? (
-              <div className="flex justify-center py-10"><FaSpinner className="text-neon-blue text-3xl animate-spin" /></div>
+              <div className="flex justify-center py-12"><FaSpinner className="text-primary-600 text-3xl animate-spin" /></div>
             ) : completedBookings.length === 0 ? (
-              <div className="bg-dark-card/60 border border-white/5 rounded-2xl p-8 text-center text-gray-500">
-                No completed payments yet.
+              <div className="parkease-card rounded-2xl p-8 text-center text-slate-500 dark:text-slate-400 text-sm shadow-sm">
+                No past transactions found.
               </div>
             ) : (
               <div className="space-y-3">
                 {completedBookings.slice(0, 15).map((b) => (
-                  <motion.div key={b.id} whileHover={{ x: 4 }}
-                    className="bg-dark-card/60 border border-white/5 rounded-2xl p-5 flex items-center justify-between group">
+                  <motion.div key={b.id} whileHover={{ y: -2 }}
+                    className="parkease-card rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-sm transition-all">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-neon-green/10 border border-neon-green/30 flex items-center justify-center">
-                        <FaCheckCircle className="text-neon-green" />
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <FaCheckCircle className="text-base" />
                       </div>
                       <div>
-                        <p className="text-white font-semibold text-sm">{b.parkingName}</p>
-                        <p className="text-gray-500 text-xs mt-0.5">
+                        <p className="text-slate-900 dark:text-white font-semibold text-sm">{b.parkingName}</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
                           Slot {b.slotCode} · {b.vehicleNumber} · {fmtDate(b.startTime)}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <StatusBadge status="SUCCESS" />
-                      <span className="font-black text-neon-green">₹{b.amount}</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-base">₹{b.amount}</span>
                     </div>
                   </motion.div>
                 ))}
@@ -258,26 +262,30 @@ export default function PaymentsDashboard() {
           {warnings.length > 0 && (
             <Section title={`Penalty Warnings (${warnings.length}/5)`} icon={<FaBan />}>
               <div className="space-y-3">
-                <div className={`p-4 rounded-xl border ${
-                  warnings.length >= 5 ? "bg-neon-red/10 border-neon-red/30"
-                    : warnings.length >= 3 ? "bg-yellow-500/10 border-yellow-500/30"
-                    : "bg-neon-blue/10 border-neon-blue/30"
+                <div className={`p-4 rounded-xl border shadow-sm ${
+                  warnings.length >= 5 
+                    ? "bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60"
+                    : warnings.length >= 3 
+                      ? "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60"
+                      : "bg-primary-50 dark:bg-primary-950/40 border-primary-200 dark:border-primary-800/60"
                 }`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className={`font-black text-sm ${warnings.length >= 5 ? "text-neon-red" : warnings.length >= 3 ? "text-yellow-400" : "text-neon-blue"}`}>
+                      <p className={`font-bold text-sm ${warnings.length >= 5 ? "text-rose-700 dark:text-rose-300" : warnings.length >= 3 ? "text-amber-700 dark:text-amber-300" : "text-primary-700 dark:text-primary-300"}`}>
                         {warnings.length >= 5 ? "⚠️ MAXIMUM WARNINGS REACHED" : warnings.length >= 3 ? "⚠️ HIGH WARNING COUNT" : "Active Warnings"}
                       </p>
-                      <p className="text-gray-400 text-xs mt-1">
+                      <p className="text-slate-600 dark:text-slate-400 text-xs mt-1">
                         {warnings.length >= 5
-                          ? "Your account may be suspended. Pay all penalties immediately."
-                          : `${5 - warnings.length} warning${5 - warnings.length !== 1 ? "s" : ""} remaining before suspension.`}
+                          ? "Your account may be suspended permanently. Settle all penalties immediately."
+                          : `${5 - warnings.length} warning${5 - warnings.length !== 1 ? "s" : ""} remaining before account restriction.`}
                       </p>
                     </div>
-                    <div className={`w-14 h-14 rounded-full border-4 flex items-center justify-center font-black text-lg ${
-                      warnings.length >= 5 ? "border-neon-red text-neon-red bg-neon-red/10"
-                        : warnings.length >= 3 ? "border-yellow-400 text-yellow-400 bg-yellow-500/10"
-                        : "border-neon-blue text-neon-blue bg-neon-blue/10"
+                    <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm ${
+                      warnings.length >= 5 
+                        ? "border-rose-400 text-rose-600 bg-rose-100 dark:bg-rose-900/60"
+                        : warnings.length >= 3 
+                          ? "border-amber-400 text-amber-600 bg-amber-100 dark:bg-amber-900/60"
+                          : "border-primary-400 text-primary-600 bg-primary-100 dark:bg-primary-900/60"
                     }`}>
                       {warnings.length}/5
                     </div>
@@ -286,20 +294,20 @@ export default function PaymentsDashboard() {
 
                 {warnings.map((w) => (
                   <motion.div key={w.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
-                    className="bg-dark-card/60 border border-white/5 rounded-2xl p-5 flex items-center justify-between">
+                    className="parkease-card border-rose-200 dark:border-rose-900/50 rounded-2xl p-5 flex items-center justify-between shadow-sm">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-neon-red/20 border border-neon-red/30 flex items-center justify-center">
-                        <FaExclamationTriangle className="text-neon-red" />
+                      <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 flex items-center justify-center">
+                        <FaExclamationTriangle />
                       </div>
                       <div>
-                        <p className="text-white font-semibold text-sm">{w.parkingName}</p>
-                        <p className="text-gray-500 text-xs mt-0.5">Slot #{w.slotId} · {fmtDate(w.date)}</p>
-                        <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-neon-red/20 text-neon-red border border-neon-red/30">{w.status}</span>
+                        <p className="text-slate-900 dark:text-white font-semibold text-sm">{w.parkingName}</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Slot #{w.slotId} · {fmtDate(w.date)}</p>
+                        <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/60">{w.status}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-neon-red font-black text-lg">₹{w.amount}</span>
-                      <button onClick={() => payPenalty(w)} className="px-4 py-2 bg-neon-red text-white rounded-xl font-bold text-sm hover:bg-red-500 transition-all">
+                      <span className="text-rose-600 dark:text-rose-400 font-bold text-lg">₹{w.amount}</span>
+                      <button onClick={() => payPenalty(w)} className="px-4 py-2 bg-rose-600 text-white rounded-xl font-bold text-xs hover:bg-rose-700 transition-all shadow-sm">
                         Pay Now
                       </button>
                     </div>
@@ -312,4 +320,4 @@ export default function PaymentsDashboard() {
       </DashboardLayout>
     </>
   );
-}
+}

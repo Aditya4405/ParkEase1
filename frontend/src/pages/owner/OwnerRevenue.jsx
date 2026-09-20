@@ -33,7 +33,7 @@ function OwnerRevenue() {
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-right" autoClose={3000}
+      <ToastContainer position="top-right" autoClose={3000}
         style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
 
       <DashboardLayout
@@ -42,27 +42,22 @@ function OwnerRevenue() {
       >
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
-              <FaMoneyBillWave className="text-neon-green" /> Revenue Analytics
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2.5">
+              <FaMoneyBillWave className="text-emerald-600 dark:text-emerald-400" /> Revenue & Financial Analytics
             </h2>
-            <p className="text-gray-400">Detailed breakdown of your earnings and transactions</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Detailed breakdown of facility earnings, occupancy yield, and transactions</p>
           </div>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <FaSpinner className="text-neon-blue text-4xl animate-spin" />
+          <div className="flex items-center justify-center py-24">
+            <FaSpinner className="text-primary-600 text-3xl animate-spin" />
           </div>
         ) : (
-          <>
-            <div className="mb-10">
-              <RevenueChart revenueData={revenueData} />
-            </div>
-
-            <div className="mt-10 mb-10">
-              <RevenueAnalytics revenueData={revenueData} parkings={parkings} />
-            </div>
-          </>
+          <div className="space-y-8">
+            <RevenueChart revenueData={revenueData} />
+            <RevenueAnalytics revenueData={revenueData} parkings={parkings} />
+          </div>
         )}
       </DashboardLayout>
     </>
@@ -70,3 +65,4 @@ function OwnerRevenue() {
 }
 
 export default OwnerRevenue;
+

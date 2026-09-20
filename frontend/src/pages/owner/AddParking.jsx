@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { FaPlus, FaTrash, FaArrowLeft, FaParking, FaSpinner } from "react-icons/fa";
+import { FaPlus, FaTrash, FaArrowLeft, FaParking, FaSpinner, FaCar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { ownerParkingsAPI } from "../../api/api";
 
 const VEHICLE_TYPES = [
-  { value: "CAR",   label: "Car",   prefix: "CAR"  },
-  { value: "BIKE",  label: "Bike",  prefix: "BIKE" },
-  { value: "LARGE", label: "Large", prefix: "LRG"  },
-  { value: "SMALL", label: "Small", prefix: "SML"  },
+  { value: "CAR",   label: "Standard Car",   prefix: "CAR"  },
+  { value: "BIKE",  label: "Two-Wheeler",    prefix: "BIKE" },
+  { value: "LARGE", label: "SUV / Large",    prefix: "LRG"  },
+  { value: "SMALL", label: "Compact / Mini", prefix: "SML"  },
 ];
 
 export default function AddParking() {
@@ -43,12 +43,11 @@ export default function AddParking() {
     setSlotConfigs(updated);
   };
 
-  // Preview slots for the UI (same logic as backend)
   const generatePreview = () => {
     const slots = [];
     slotConfigs.forEach(config => {
       const count    = parseInt(config.numberOfSlots) || 0;
-      const typeInfo = VEHICLE_TYPES.find(t => t.value === config.vehicleType);
+      const typeInfo = VEHICLE_TYPES.find(t => t.value === config.vehicleType) || { prefix: "SLT" };
       for (let i = 1; i <= count; i++) {
         slots.push(`${typeInfo.prefix}-${String(i).padStart(2, "0")}`);
       }
@@ -64,7 +63,7 @@ export default function AddParking() {
       c => parseInt(c.numberOfSlots) > 0 && parseFloat(c.costPerHour) > 0
     );
     if (validConfigs.length === 0) {
-      toast.error("Add at least one slot type with valid slots and cost.");
+      toast.error("Add at least one slot category with positive slots and cost.");
       return;
     }
 
@@ -81,7 +80,7 @@ export default function AddParking() {
         })),
       });
 
-      toast.success("Parking created successfully!");
+      toast.success("Parking facility registered successfully!");
       setTimeout(() => navigate("/owner/dashboard"), 1000);
     } catch (err) {
       toast.error(err.message || "Failed to create parking.");
@@ -93,7 +92,7 @@ export default function AddParking() {
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-right" autoClose={3000}
+      <ToastContainer position="top-right" autoClose={3000}
         style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
 
       <DashboardLayout role="OWNER">
@@ -103,13 +102,13 @@ export default function AddParking() {
           <div className="flex items-center gap-4 mb-8">
             <button
               onClick={() => navigate("/owner/dashboard")}
-              className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 transition-all"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all shadow-sm"
             >
               <FaArrowLeft />
             </button>
             <div>
-              <h2 className="text-3xl font-bold text-white mb-1">Add New Parking</h2>
-              <p className="text-gray-400">Configure your parking lot details and slot types</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Add Parking Facility</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Configure your facility details, vehicle slot categories, and pricing</p>
             </div>
           </div>
 
@@ -117,44 +116,44 @@ export default function AddParking() {
 
             {/* ── Basic Details ─────────────────────────────────────────────── */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-dark-card/60 backdrop-blur-xl border border-white/5 rounded-2xl p-6"
+              className="parkease-card rounded-2xl p-6 shadow-sm"
             >
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <FaParking className="text-neon-blue" /> Parking Details
+              <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                <FaParking className="text-primary-600 dark:text-primary-400" /> Facility Information
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1.5">Parking Name *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">Facility Name *</label>
                   <input
                     type="text"
                     value={parkingName}
                     onChange={e => setParkingName(e.target.value)}
-                    placeholder="e.g. City Mall Parking"
+                    placeholder="e.g. City Center Mall Parking"
                     required
-                    className="w-full bg-dark-bg border border-white/10 rounded-xl p-3 text-white placeholder-gray-600 focus:border-neon-blue outline-none transition-colors"
+                    className="parkease-input text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1.5">Location *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">Full Location Address *</label>
                   <input
                     type="text"
                     value={location}
                     onChange={e => setLocation(e.target.value)}
-                    placeholder="e.g. City Center, Block A"
+                    placeholder="e.g. Near Metro Gate 2, Connaught Place, New Delhi"
                     required
-                    className="w-full bg-dark-bg border border-white/10 rounded-xl p-3 text-white placeholder-gray-600 focus:border-neon-blue outline-none transition-colors"
+                    className="parkease-input text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1.5">Description</label>
+                  <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">Description & Amenities</label>
                   <textarea
                     value={description}
                     onChange={e => setDescription(e.target.value)}
-                    placeholder="Brief description of the parking lot..."
+                    placeholder="Provide details such as CCTV monitoring, EV charging, covered roof, 24/7 security..."
                     rows={3}
-                    className="w-full bg-dark-bg border border-white/10 rounded-xl p-3 text-white placeholder-gray-600 focus:border-neon-blue outline-none transition-colors resize-none"
+                    className="parkease-input text-sm resize-none"
                   />
                 </div>
               </div>
@@ -162,42 +161,44 @@ export default function AddParking() {
 
             {/* ── Slot Configuration ────────────────────────────────────────── */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-dark-card/60 backdrop-blur-xl border border-white/5 rounded-2xl p-6"
+              className="parkease-card rounded-2xl p-6 shadow-sm"
             >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span className="w-2 h-6 rounded-full bg-neon-purple" />
-                  Slot Configuration
-                </h3>
+              <div className="flex justify-between items-center mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <FaCar className="text-primary-600 dark:text-primary-400" /> Slot Breakdown & Rates
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Specify slots and hourly prices per vehicle type</p>
+                </div>
                 {slotConfigs.length < VEHICLE_TYPES.length && (
                   <button
                     type="button"
                     onClick={addSlotConfig}
-                    className="px-4 py-2 bg-neon-purple/20 hover:bg-neon-purple/30 text-neon-purple border border-neon-purple/30 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                    className="px-3.5 py-1.5 bg-primary-50 dark:bg-primary-950/40 hover:bg-primary-100 text-primary-700 dark:text-primary-300 border border-primary-200/70 dark:border-primary-800/50 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all"
                   >
-                    <FaPlus className="text-xs" /> Add Type
+                    <FaPlus size={10} /> Add Category
                   </button>
                 )}
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {slotConfigs.map((config, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="bg-white/5 border border-white/5 rounded-xl p-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60 rounded-xl p-4"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
                       <div>
-                        <label className="block text-gray-400 text-xs mb-1.5 uppercase tracking-wider">Vehicle Type</label>
+                        <label className="block text-slate-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider mb-1">Vehicle Category</label>
                         <select
                           value={config.vehicleType}
                           onChange={e => updateSlotConfig(index, "vehicleType", e.target.value)}
-                          className="w-full bg-dark-bg border border-white/10 rounded-lg p-3 text-white focus:border-neon-blue outline-none"
+                          className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-primary-500"
                         >
                           {VEHICLE_TYPES.map(t => (
                             <option
@@ -211,25 +212,25 @@ export default function AddParking() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-gray-400 text-xs mb-1.5 uppercase tracking-wider">Number of Slots</label>
+                        <label className="block text-slate-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider mb-1">Slot Count</label>
                         <input
-                          type="number" min="1" max="100"
+                          type="number" min="1" max="250"
                           value={config.numberOfSlots}
                           onChange={e => updateSlotConfig(index, "numberOfSlots", e.target.value)}
-                          placeholder="e.g. 10"
+                          placeholder="e.g. 15"
                           required
-                          className="w-full bg-dark-bg border border-white/10 rounded-lg p-3 text-white placeholder-gray-600 focus:border-neon-blue outline-none"
+                          className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-primary-500"
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-400 text-xs mb-1.5 uppercase tracking-wider">Cost / Hour (₹)</label>
+                        <label className="block text-slate-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider mb-1">Fare / Hour (₹)</label>
                         <input
-                          type="number" min="0.5" step="0.5"
+                          type="number" min="1" step="1"
                           value={config.costPerHour}
                           onChange={e => updateSlotConfig(index, "costPerHour", e.target.value)}
-                          placeholder="e.g. 50"
+                          placeholder="e.g. 40"
                           required
-                          className="w-full bg-dark-bg border border-white/10 rounded-lg p-3 text-white placeholder-gray-600 focus:border-neon-blue outline-none"
+                          className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-primary-500"
                         />
                       </div>
                       <div className="flex items-center justify-end">
@@ -237,9 +238,10 @@ export default function AddParking() {
                           <button
                             type="button"
                             onClick={() => removeSlotConfig(index)}
-                            className="p-3 rounded-lg bg-neon-red/10 hover:bg-neon-red/20 text-neon-red border border-neon-red/20 transition-all"
+                            className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/60 transition-all text-xs"
+                            title="Remove Category"
                           >
-                            <FaTrash />
+                            <FaTrash size={12} />
                           </button>
                         )}
                       </div>
@@ -250,18 +252,18 @@ export default function AddParking() {
 
               {/* Slot Preview */}
               {preview.length > 0 && (
-                <div className="mt-6 p-4 bg-dark-bg/50 rounded-xl border border-white/5">
-                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">Slot Preview</p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="mt-5 p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60">
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider mb-2.5">Auto-Generated Slot Identifiers</p>
+                  <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
                     {preview.map(code => (
                       <span key={code}
-                        className="px-3 py-1.5 bg-neon-green/10 text-neon-green border border-neon-green/20 rounded-lg text-xs font-mono font-bold">
+                        className="px-2.5 py-1 bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-300 border border-slate-200 dark:border-slate-700 rounded-md text-xs font-mono font-bold shadow-xs">
                         {code}
                       </span>
                     ))}
                   </div>
-                  <p className="text-gray-500 text-xs mt-3">
-                    Total: {preview.length} slots will be created
+                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-3 font-medium">
+                    Total: <span className="font-bold text-slate-900 dark:text-white">{preview.length}</span> parking slots will be registered.
                   </p>
                 </div>
               )}
@@ -272,18 +274,18 @@ export default function AddParking() {
               <button
                 type="button"
                 onClick={() => navigate("/owner/dashboard")}
-                className="flex-1 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold border border-white/10 transition-all"
+                className="flex-1 py-3 px-4 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-semibold border border-slate-200 dark:border-slate-700 transition-all shadow-sm text-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 py-3.5 rounded-xl bg-neon-green hover:bg-green-400 text-black font-bold shadow-[0_0_20px_rgba(34,197,94,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                className="flex-1 py-3 px-4 rounded-xl parkease-btn-primary font-bold shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60 text-sm"
               >
                 {loading
-                  ? <><FaSpinner className="animate-spin" /> Creating...</>
-                  : <><FaPlus /> Create Parking</>}
+                  ? <><FaSpinner className="animate-spin" /> Registering Facility...</>
+                  : <><FaPlus size={12} /> Register Facility</>}
               </button>
             </div>
           </form>
@@ -291,4 +293,4 @@ export default function AddParking() {
       </DashboardLayout>
     </>
   );
-}
+}

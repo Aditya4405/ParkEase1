@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaSearch, FaTimes, FaSyncAlt,
@@ -56,37 +56,42 @@ export default function TransactionsPage() {
 
   return (
     <DashboardLayout role="ADMIN">
-      <ToastContainer theme="dark" position="top-right" autoClose={3000} />
-
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-black text-white">Payment Transactions</h1>
-          <p className="text-xs text-gray-400 mt-1">
-            Complete transaction ledger of booking payments, extensions, and penalty receipts
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Payment Transactions</h1>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-800/60">
+              {transactions.length} records
+            </span>
+          </div>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Complete transaction ledger of booking payments, extensions, and settlements
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-gray-300">
-            Total Transactions: <strong className="text-white">{transactions.length}</strong>
-          </span>
-        </div>
+        <button
+          onClick={fetchTransactions}
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all cursor-pointer w-fit"
+        >
+          <FaSyncAlt size={11} className={loading ? "animate-spin text-primary-600" : ""} />
+          <span>Refresh</span>
+        </button>
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-[#1e293b] border border-white/10 rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div className="parkease-card rounded-2xl p-4 mb-6 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
         {/* Search */}
-        <div className="flex items-center gap-2.5 bg-black/20 border border-white/10 rounded-xl px-3 py-2 w-full md:w-80">
-          <FaSearch className="text-gray-400 text-xs flex-shrink-0" />
+        <div className="relative w-full md:w-80">
+          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs flex-shrink-0" />
           <input
             type="text"
             placeholder="Search by Transaction ID, User, or Lot..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-transparent text-xs text-white placeholder-gray-500 outline-none w-full"
+            className="parkease-input pl-9 pr-8 py-2 text-xs w-full"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="text-gray-400 hover:text-white">
+            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
               <FaTimes size={10} />
             </button>
           )}
@@ -97,7 +102,7 @@ export default function TransactionsPage() {
           <select
             value={methodFilter}
             onChange={(e) => setMethodFilter(e.target.value)}
-            className="bg-black/20 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none cursor-pointer"
+            className="parkease-input py-2 px-3 text-xs cursor-pointer"
           >
             <option value="ALL">All Methods</option>
             <option value="UPI">UPI</option>
@@ -108,7 +113,7 @@ export default function TransactionsPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-black/20 border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none cursor-pointer"
+            className="parkease-input py-2 px-3 text-xs cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="SUCCESS">SUCCESS</option>
@@ -123,26 +128,28 @@ export default function TransactionsPage() {
       {loading ? (
         <TableSkeleton rows={7} cols={7} />
       ) : error ? (
-        <div className="bg-[#1e293b] border border-neon-red/30 rounded-2xl p-12 text-center text-gray-300 flex flex-col items-center gap-3">
-          <FaExclamationTriangle className="text-neon-red text-3xl" />
-          <p className="text-sm font-bold text-white">Unable to load transactions</p>
-          <p className="text-xs text-gray-400">{error}</p>
+        <div className="parkease-card rounded-2xl p-12 text-center text-slate-600 dark:text-slate-300 flex flex-col items-center gap-3 border-rose-200 dark:border-rose-900/40">
+          <div className="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl">
+            <FaExclamationTriangle />
+          </div>
+          <p className="text-sm font-bold text-slate-900 dark:text-white">Unable to load transactions</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{error}</p>
           <button
             onClick={fetchTransactions}
-            className="mt-2 px-4 py-2 bg-neon-blue/20 hover:bg-neon-blue/30 text-neon-blue border border-neon-blue/40 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+            className="mt-2 px-4 py-2 bg-primary-50 hover:bg-primary-100 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800/60 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
           >
             <FaSyncAlt size={12} /> Retry
           </button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#1e293b] border border-white/10 rounded-2xl p-12 text-center text-gray-400 text-xs">
+        <div className="parkease-card rounded-2xl p-12 text-center text-slate-400 text-xs">
           No transactions found.
         </div>
       ) : (
-        <div className="bg-[#1e293b] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+        <div className="parkease-card rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-black/30 border-b border-white/10 text-gray-400 font-bold uppercase tracking-wider text-[10px]">
+              <thead className="bg-slate-50/70 dark:bg-slate-850/50 border-b border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                 <tr>
                   <th className="p-4">Transaction ID</th>
                   <th className="p-4">User</th>
@@ -153,43 +160,43 @@ export default function TransactionsPage() {
                   <th className="p-4 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filtered.map((t, idx) => (
-                  <tr key={t.id || idx} className="hover:bg-white/[0.02]">
-                    <td className="p-4 font-mono font-bold text-gray-300">
+                  <tr key={t.id || idx} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="p-4 font-mono font-bold text-primary-600 dark:text-primary-400">
                       {t.transactionId}
                     </td>
 
                     <td className="p-4">
-                      <p className="font-bold text-white">{t.userName}</p>
-                      <p className="text-[11px] text-gray-400">{t.userEmail}</p>
+                      <p className="font-bold text-slate-900 dark:text-white">{t.userName}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">{t.userEmail}</p>
                     </td>
 
                     <td className="p-4">
-                      <p className="font-bold text-white">{t.parkingName}</p>
-                      {t.slotCode && <span className="text-[10px] text-neon-blue">Slot {t.slotCode}</span>}
+                      <p className="font-bold text-slate-900 dark:text-white">{t.parkingName}</p>
+                      {t.slotCode && <span className="text-[10px] text-primary-600 dark:text-primary-400 font-bold">Slot {t.slotCode}</span>}
                     </td>
 
-                    <td className="p-4 text-gray-300 font-semibold">
+                    <td className="p-4 text-slate-700 dark:text-slate-300 font-semibold">
                       {t.method || "UPI"}
                     </td>
 
-                    <td className="p-4 font-black text-neon-green">
+                    <td className="p-4 font-bold text-emerald-600 dark:text-emerald-400">
                       {fmtMoney(t.amount)}
                     </td>
 
-                    <td className="p-4 text-[11px] text-gray-400">
+                    <td className="p-4 text-[11px] text-slate-500 dark:text-slate-400">
                       {fmtTime(t.paidAt || t.createdAt)}
                     </td>
 
                     <td className="p-4 text-right">
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-black border ${
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                           t.status === "SUCCESS"
-                            ? "bg-neon-green/20 text-neon-green border-neon-green/30"
+                            ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60"
                             : t.status === "FAILED"
-                            ? "bg-neon-red/20 text-neon-red border-neon-red/30"
-                            : "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                            ? "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/60"
+                            : "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/60"
                         }`}
                       >
                         {t.status}
