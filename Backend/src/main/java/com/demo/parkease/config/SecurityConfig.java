@@ -74,15 +74,25 @@ public class SecurityConfig {
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                // ── Public ──────────────────────────────────────────────────
                 .requestMatchers("/api/auth/**").permitAll()
+                // Owner application SUBMIT and STATUS check are public — applicant has no JWT yet
+                .requestMatchers("/api/owner-applications/submit", "/api/owner-applications/status/**").permitAll()
+                // ── Authenticated (any role) ─────────────────────────────────
+                .requestMatchers("/api/owner-applications/me").authenticated()
+                // Document download — auth required; authorization checked in controller
+                .requestMatchers("/api/documents/**").authenticated()
+                // ── Role-restricted ─────────────────────────────────────────
                 .requestMatchers("/api/owner/parkings/debug").permitAll()
                 .requestMatchers("/api/owner/**").hasAuthority("ROLE_OWNER")
                 .requestMatchers("/api/user/parkings/**").hasAuthority("ROLE_USER")
                 .requestMatchers("/api/user/bookings/**").hasAuthority("ROLE_USER")
                 .requestMatchers("/api/user/dashboard/**").hasAuthority("ROLE_USER")
-                .requestMatchers("/api/user/payments/**").hasAuthority("ROLE_USER") // ← ADDED
+                .requestMatchers("/api/user/payments/**").hasAuthority("ROLE_USER")
+                // Admin owner approvals — ADMIN only
+                .requestMatchers("/api/admin/owner-approvals/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/api/chat/**").authenticated() // ← Chatbot: any logged-in user
+                .requestMatchers("/api/chat/**").authenticated()
                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

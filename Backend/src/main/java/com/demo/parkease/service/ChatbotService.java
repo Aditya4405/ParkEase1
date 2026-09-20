@@ -224,8 +224,10 @@ public class ChatbotService {
     private String callGroqApi(ArrayNode messages) throws Exception {
         String[] candidateModels = new String[]{
             groqModel,
-            "llama-3.1-8b-instant",
-            "gemma2-9b-it"
+            "qwen/qwen3.8-27b",
+            "openai/gpt-oss-20b",
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant"
         };
 
         Exception lastException = null;
@@ -235,7 +237,7 @@ public class ChatbotService {
 
             try {
                 ObjectNode requestBody = objectMapper.createObjectNode();
-                requestBody.put("model", modelName);
+                requestBody.put("model", modelName.trim());
                 requestBody.set("messages", messages);
                 requestBody.put("temperature", 0.7);
                 requestBody.put("max_tokens", 1024);
@@ -255,6 +257,8 @@ public class ChatbotService {
 
             } catch (org.springframework.web.client.HttpClientErrorException e) {
                 int status = e.getStatusCode().value();
+                String errBody = e.getResponseBodyAsString();
+
                 if (status == 401) {
                     throw new RuntimeException(
                         "Groq API key is invalid or expired. Please update groq.api.key in application.properties. " +
@@ -262,11 +266,11 @@ public class ChatbotService {
                 } else if (status == 429) {
                     throw new RuntimeException(
                         "Groq API rate limit reached. Please wait a moment and try again.");
-                } else if (status == 404 || e.getResponseBodyAsString().contains("model_not_found")) {
+                } else if (status == 404 || errBody.contains("model_not_found") || errBody.contains("model_decommissioned") || errBody.contains("decommissioned")) {
                     lastException = e;
-                    continue; // try next fallback model (e.g. llama-3.1-8b-instant)
+                    continue; // try next fallback model (e.g. llama-3.3-70b-versatile or llama-3.1-8b-instant)
                 } else {
-                    throw new RuntimeException("Groq API error (HTTP " + status + "): " + e.getResponseBodyAsString());
+                    throw new RuntimeException("Groq API error (HTTP " + status + "): " + errBody);
                 }
             } catch (Exception ex) {
                 lastException = ex;

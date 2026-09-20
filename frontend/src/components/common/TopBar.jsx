@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { FiSearch, FiSun, FiMoon, FiMonitor } from "react-icons/fi";
-import { FaUserCircle, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import NotificationBell from "./NotificationBell";
 import { useTheme } from "../../context/ThemeContext";
@@ -71,11 +71,11 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
       results.transactions?.length > 0);
 
   return (
-    <header className="fixed top-0 right-0 left-64 z-40 h-16 bg-[#0f172a]/90 dark:bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-8 text-white">
+    <header className="fixed top-0 right-0 left-64 z-40 h-16 bg-white/85 dark:bg-[#0E1726]/85 backdrop-blur-md border-b border-slate-200/70 dark:border-slate-800/80 flex items-center justify-between px-8 text-slate-900 dark:text-white transition-colors duration-200">
       {/* Global Search Bar */}
       <div className="relative w-96" ref={searchRef}>
-        <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2 w-full focus-within:border-neon-blue/50 focus-within:bg-white/10 transition-all">
-          <FiSearch className="text-gray-400 flex-shrink-0 text-sm" />
+        <div className="flex items-center gap-3 bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 rounded-xl px-4 py-2 w-full focus-within:border-[#5B4DF5] focus-within:ring-2 focus-within:ring-[#5B4DF5]/15 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all">
+          <FiSearch className="text-slate-400 dark:text-slate-500 flex-shrink-0 text-sm" />
           <input
             type="text"
             placeholder={isAdmin ? "Search users, parkings, bookings, txns..." : "Search parking..."}
@@ -88,69 +88,69 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
               }
             }}
             onFocus={() => isAdmin && results && setShowDropdown(true)}
-            className="bg-transparent text-white placeholder-gray-500 text-xs outline-none w-full font-medium"
+            className="bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-xs outline-none w-full font-medium"
           />
-          {loading && <FaSpinner className="text-neon-blue animate-spin text-xs flex-shrink-0" />}
+          {loading && <FaSpinner className="text-[#5B4DF5] animate-spin text-xs flex-shrink-0" />}
         </div>
 
         {/* Global Search Results Dropdown (Admin only) */}
         {isAdmin && showDropdown && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-[#0f1629] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden z-50 max-h-96 overflow-y-auto">
             {loading && !results && (
-              <div className="p-4 text-center text-xs text-gray-400 flex items-center justify-center gap-2">
-                <FaSpinner className="animate-spin text-neon-blue" /> Searching platform...
+              <div className="p-4 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+                <FaSpinner className="animate-spin text-[#5B4DF5]" /> Searching platform...
               </div>
             )}
 
             {!loading && !hasResults && query.trim() && (
-              <div className="p-4 text-center text-xs text-gray-400">
+              <div className="p-4 text-center text-xs text-slate-500">
                 No matching results for "{query}"
               </div>
             )}
 
             {results?.users?.length > 0 && (
-              <div className="p-2 border-b border-white/5">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-3 py-1">Users</p>
+              <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">Users</p>
                 {results.users.map((u) => (
                   <button
                     key={`u-${u.id}`}
                     onClick={() => handleSelectResult(u.url)}
-                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-white/5 flex items-center justify-between transition-colors text-xs"
+                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 flex items-center justify-between transition-colors text-xs"
                   >
-                    <span className="font-semibold text-white">{u.title}</span>
-                    <span className="text-gray-400 text-[11px]">{u.subtitle}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{u.title}</span>
+                    <span className="text-slate-500 text-[11px]">{u.subtitle}</span>
                   </button>
                 ))}
               </div>
             )}
 
             {results?.parkings?.length > 0 && (
-              <div className="p-2 border-b border-white/5">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-3 py-1">Parking Lots</p>
+              <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">Parking Lots</p>
                 {results.parkings.map((p) => (
                   <button
                     key={`p-${p.id}`}
                     onClick={() => handleSelectResult(p.url)}
-                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-white/5 flex items-center justify-between transition-colors text-xs"
+                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 flex items-center justify-between transition-colors text-xs"
                   >
-                    <span className="font-semibold text-white">{p.title}</span>
-                    <span className="text-gray-400 text-[11px]">{p.subtitle}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{p.title}</span>
+                    <span className="text-slate-500 text-[11px]">{p.subtitle}</span>
                   </button>
                 ))}
               </div>
             )}
 
             {results?.bookings?.length > 0 && (
-              <div className="p-2 border-b border-white/5">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-3 py-1">Bookings</p>
+              <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">Bookings</p>
                 {results.bookings.map((b) => (
                   <button
                     key={`b-${b.id}`}
                     onClick={() => handleSelectResult(b.url)}
-                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-white/5 flex items-center justify-between transition-colors text-xs"
+                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 flex items-center justify-between transition-colors text-xs"
                   >
-                    <span className="font-semibold text-white">{b.title}</span>
-                    <span className="text-gray-400 text-[11px]">{b.subtitle}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{b.title}</span>
+                    <span className="text-slate-500 text-[11px]">{b.subtitle}</span>
                   </button>
                 ))}
               </div>
@@ -158,15 +158,15 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
 
             {results?.transactions?.length > 0 && (
               <div className="p-2">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-3 py-1">Transactions</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">Transactions</p>
                 {results.transactions.map((t) => (
                   <button
                     key={`t-${t.id}`}
                     onClick={() => handleSelectResult(t.url)}
-                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-white/5 flex items-center justify-between transition-colors text-xs"
+                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 flex items-center justify-between transition-colors text-xs"
                   >
-                    <span className="font-semibold text-white">{t.title}</span>
-                    <span className="text-neon-green text-[11px] font-semibold">{t.subtitle}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{t.title}</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">{t.subtitle}</span>
                   </button>
                 ))}
               </div>
@@ -181,41 +181,41 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
         <div className="relative" ref={themeRef}>
           <button
             onClick={() => setShowThemeMenu(!showThemeMenu)}
-            className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800 transition-all cursor-pointer shadow-sm"
             title={`Current Theme: ${theme}`}
           >
             {theme === "dark" ? (
-              <FiMoon size={15} className="text-neon-purple" />
+              <FiMoon size={15} className="text-[#5B4DF5]" />
             ) : theme === "light" ? (
-              <FiSun size={15} className="text-amber-400" />
+              <FiSun size={15} className="text-amber-500" />
             ) : (
-              <FiMonitor size={15} className="text-neon-blue" />
+              <FiMonitor size={15} className="text-indigo-500" />
             )}
           </button>
 
           {showThemeMenu && (
-            <div className="absolute right-0 mt-2 w-36 bg-[#0f1629] border border-white/10 rounded-xl shadow-2xl p-1 z-50 space-y-0.5">
-              <button
-                onClick={() => {
-                  setTheme("dark");
-                  setShowThemeMenu(false);
-                }}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                  theme === "dark" ? "bg-neon-blue/20 text-neon-blue" : "text-gray-300 hover:bg-white/5"
-                }`}
-              >
-                <FiMoon size={13} /> Dark (Default)
-              </button>
+            <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-1 z-50 space-y-0.5">
               <button
                 onClick={() => {
                   setTheme("light");
                   setShowThemeMenu(false);
                 }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                  theme === "light" ? "bg-neon-blue/20 text-neon-blue" : "text-gray-300 hover:bg-white/5"
+                  theme === "light" ? "bg-[#EEF2FF] text-[#5B4DF5] dark:bg-indigo-950/40 dark:text-indigo-400" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                 }`}
               >
-                <FiSun size={13} /> Light
+                <FiSun size={13} className="text-amber-500" /> Light
+              </button>
+              <button
+                onClick={() => {
+                  setTheme("dark");
+                  setShowThemeMenu(false);
+                }}
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                  theme === "dark" ? "bg-[#EEF2FF] text-[#5B4DF5] dark:bg-indigo-950/40 dark:text-indigo-400" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                }`}
+              >
+                <FiMoon size={13} className="text-[#5B4DF5]" /> Dark
               </button>
               <button
                 onClick={() => {
@@ -223,10 +223,10 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
                   setShowThemeMenu(false);
                 }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                  theme === "system" ? "bg-neon-blue/20 text-neon-blue" : "text-gray-300 hover:bg-white/5"
+                  theme === "system" ? "bg-[#EEF2FF] text-[#5B4DF5] dark:bg-indigo-950/40 dark:text-indigo-400" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                 }`}
               >
-                <FiMonitor size={13} /> System
+                <FiMonitor size={13} className="text-indigo-500" /> System
               </button>
             </div>
           )}
@@ -242,14 +242,16 @@ export default function TopBar({ onSearch, searchTerm, userInfo, toggleProfile }
             e.stopPropagation();
             toggleProfile && toggleProfile();
           }}
-          className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 hover:bg-white/10 transition-all cursor-pointer"
+          className="flex items-center gap-2.5 bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 rounded-xl px-3 py-1.5 hover:bg-slate-200/70 dark:hover:bg-slate-800 transition-all cursor-pointer shadow-sm"
         >
-          <FaUserCircle className="text-neon-blue flex-shrink-0" size={20} />
+          <div className="w-6 h-6 rounded-lg bg-[#EEF2FF] dark:bg-indigo-950/60 text-[#5B4DF5] dark:text-indigo-400 flex items-center justify-center font-bold text-xs">
+            {userInfo?.name ? userInfo.name.charAt(0).toUpperCase() : "U"}
+          </div>
           <div className="text-left hidden sm:block">
-            <p className="text-xs font-bold text-white leading-tight">
+            <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
               {userInfo?.name || "User"}
             </p>
-            <p className="text-[10px] text-gray-400 leading-tight">
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
               {userInfo?.role || "Member"}
             </p>
           </div>

@@ -18,9 +18,9 @@ const TABS = [
 
 function SummaryRow({ icon, label, value }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-gray-500 text-sm">{icon}{label}</span>
-      <span className="text-white text-sm font-semibold">{value}</span>
+    <div className="flex items-center justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80 last:border-0">
+      <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-medium">{icon}{label}</span>
+      <span className="text-slate-900 dark:text-white text-xs font-semibold">{value}</span>
     </div>
   );
 }
@@ -177,12 +177,12 @@ export default function PaymentPage() {
       <DashboardLayout role="USER">
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200 }}
-            className="w-24 h-24 rounded-full bg-neon-green/20 border-2 border-neon-green flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.5)]">
-            <FaCheckCircle className="text-neon-green text-5xl" />
+            className="w-20 h-20 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 shadow-sm">
+            <FaCheckCircle className="text-4xl" />
           </motion.div>
-          <h2 className="text-3xl font-black text-white mb-2">Payment Successful!</h2>
-          <p className="text-neon-green/80 text-sm">Redirecting to your session...</p>
-          <div className="mt-6 w-6 h-6 border-2 border-neon-blue border-t-transparent rounded-full animate-spin" />
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-1 font-heading">Payment Successful!</h2>
+          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-semibold">Redirecting to your active parking session...</p>
+          <div className="mt-6 w-5 h-5 border-2 border-[#5B4DF5] border-t-transparent rounded-full animate-spin" />
         </div>
       </DashboardLayout>
     );
@@ -196,15 +196,15 @@ export default function PaymentPage() {
 
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
-            <button onClick={() => navigate(-1)} className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 transition-all">
-              <FaArrowLeft />
+            <button onClick={() => navigate(-1)} className="p-2.5 rounded-xl bg-white dark:bg-[#131C31] hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-all cursor-pointer">
+              <FaArrowLeft size={13} />
             </button>
             <div>
-              <h2 className="text-3xl font-bold text-white">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight font-heading">
                 {intent === "extend" ? "Extend Parking" : intent === "final" || intent === "penalty" ? "Pay Outstanding Dues" : "Complete Payment"}
               </h2>
-              <p className="text-gray-400 text-sm mt-0.5">
-                {intent === "extend" ? "Add more time to your active session" : "Secure checkout · All payments encrypted"}
+              <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-0.5">
+                {intent === "extend" ? "Add additional duration to your ongoing parking session" : "Secure encrypted checkout · Safe digital transaction"}
               </p>
             </div>
           </div>
@@ -213,29 +213,28 @@ export default function PaymentPage() {
 
             {/* LEFT: Payment Form */}
             <div className="lg:col-span-3">
-              <div className="bg-[#0f1629] border border-white/10 rounded-2xl overflow-hidden">
-                <div className="h-1 w-full bg-gradient-to-r from-neon-blue to-neon-purple" />
-                <div className="p-6">
+              <div className="bg-white dark:bg-[#131C31] border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-sm p-6 sm:p-8 transition-colors duration-200">
+                <div>
 
                   {/* Extend hours picker */}
                   {intent === "extend" && (
-                    <div className="mb-6">
-                      <p className="text-gray-400 text-sm mb-3 font-semibold uppercase tracking-wide">Extend by</p>
+                    <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800">
+                      <p className="text-slate-700 dark:text-slate-300 text-xs mb-3 font-semibold uppercase tracking-wider">Extend by Hours</p>
                       <div className="flex gap-2 flex-wrap">
                         {[1, 2, 3, 4, 6].map(h => (
                           <button
                             key={h}
                             onClick={() => setExtHours(h)}
-                            className={`px-5 py-2.5 rounded-xl border font-bold transition-all ${extHours === h
-                              ? "bg-neon-blue text-white border-neon-blue shadow-[0_0_15px_rgba(59,130,246,0.4)]"
-                              : "bg-white/5 text-gray-300 border-white/10 hover:border-neon-blue/50"
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${extHours === h
+                              ? "bg-[#5B4DF5] text-white shadow-sm"
+                              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-[#5B4DF5]/40"
                             }`}
                           >
-                            {h}h
+                            +{h}h
                           </button>
                         ))}
                       </div>
-                      <p className="text-neon-green font-black text-xl mt-3">+₹{extAmount}</p>
+                      <p className="text-emerald-600 dark:text-emerald-400 font-extrabold text-base mt-3 font-heading">+₹{extAmount}</p>
                     </div>
                   )}
 
@@ -246,15 +245,15 @@ export default function PaymentPage() {
                         key={id}
                         disabled={disabled}
                         onClick={() => !disabled && setActiveTab(id)}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border font-bold text-sm transition-all ${
+                        className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                           activeTab === id && !disabled
-                            ? "bg-neon-blue/20 border-neon-blue text-neon-blue shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                            ? "bg-[#EEF2FF] dark:bg-indigo-950/50 border-[#5B4DF5] text-[#5B4DF5] dark:text-indigo-400 shadow-sm"
                             : disabled
-                              ? "bg-white/5 border-white/5 text-gray-600 cursor-not-allowed"
-                              : "bg-white/5 border-white/10 text-gray-300 hover:border-white/20"
+                              ? "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 cursor-not-allowed"
+                              : "bg-slate-50 dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100"
                         }`}
                       >
-                        <Icon /> {label} {disabled && <span className="text-[10px] text-gray-600">(Soon)</span>}
+                        <Icon size={14} /> {label} {disabled && <span className="text-[10px] text-slate-400">(Soon)</span>}
                       </button>
                     ))}
                   </div>
@@ -263,18 +262,18 @@ export default function PaymentPage() {
                     {activeTab === "UPI" && (
                       <motion.div key="upi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
                         <div>
-                          <label className="block text-gray-300 text-sm font-semibold mb-2">UPI ID</label>
+                          <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold mb-2 uppercase tracking-wide">UPI Virtual Payment Address</label>
                           <input
-                            placeholder="name@okaxis / name@paytm"
+                            placeholder="e.g. yourname@okhdfcbank"
                             value={upiId}
                             onChange={(e) => setUpiId(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-neon-blue/50 focus:bg-neon-blue/5 transition-all"
+                            className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                           />
                         </div>
                         <div className="flex gap-2 flex-wrap">
-                          {["paytm", "gpay", "phonepe", "ybl"].map(upi => (
+                          {["paytm", "okaxis", "okhdfcbank", "ybl"].map(upi => (
                             <button key={upi} onClick={() => setUpiId(`user@${upi}`)}
-                              className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-gray-400 text-xs hover:border-neon-blue/50 hover:text-white transition-all">
+                              className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-400 text-xs hover:text-[#5B4DF5] transition-all cursor-pointer font-medium">
                               @{upi}
                             </button>
                           ))}
@@ -285,33 +284,33 @@ export default function PaymentPage() {
                     {activeTab === "CARD" && (
                       <motion.div key="card" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
                         <div>
-                          <label className="block text-gray-300 text-sm font-semibold mb-2">Card Number</label>
+                          <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold mb-2 uppercase tracking-wide">Card Number</label>
                           <input
                             placeholder="0000 0000 0000 0000"
                             value={cardNumber}
                             onChange={(e) => setCardNumber(formatCard(e.target.value))}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-neon-blue/50 transition-all font-mono tracking-wider"
+                            className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all font-mono tracking-wider text-sm font-medium"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-300 text-sm font-semibold mb-2">Cardholder Name</label>
+                          <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold mb-2 uppercase tracking-wide">Cardholder Name</label>
                           <input
-                            placeholder="As on card"
+                            placeholder="Name as printed on card"
                             value={cardName}
                             onChange={(e) => setCardName(e.target.value.toUpperCase())}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-neon-blue/50 transition-all"
+                            className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-gray-300 text-sm font-semibold mb-2">Expiry</label>
+                            <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold mb-2 uppercase tracking-wide">Expiry</label>
                             <input placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(formatExpiry(e.target.value))}
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-neon-blue/50 transition-all font-mono" />
+                              className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all font-mono text-sm font-medium" />
                           </div>
                           <div>
-                            <label className="block text-gray-300 text-sm font-semibold mb-2">CVV</label>
+                            <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold mb-2 uppercase tracking-wide">CVV</label>
                             <input type="password" placeholder="•••" maxLength={4} value={cvv} onChange={(e) => setCvv(e.target.value.replace(/\D/g,""))}
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 focus:outline-none focus:border-neon-blue/50 transition-all font-mono" />
+                              className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all font-mono text-sm font-medium" />
                           </div>
                         </div>
                       </motion.div>
@@ -322,22 +321,22 @@ export default function PaymentPage() {
                   <button
                     onClick={handlePay}
                     disabled={processing}
-                    className={`w-full mt-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 transition-all ${
+                    className={`w-full mt-8 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer ${
                       processing
-                        ? "bg-gray-700 cursor-not-allowed text-gray-400"
-                        : "bg-gradient-to-r from-neon-blue to-neon-purple text-white hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] active:scale-[0.98]"
+                        ? "bg-slate-300 dark:bg-slate-800 cursor-not-allowed text-slate-500"
+                        : "bg-[#5B4DF5] hover:bg-[#4F41E5] text-white hover:shadow-lg active:scale-[0.99]"
                     }`}
                   >
                     {processing ? (
                       <><FaSpinner className="animate-spin" /> Processing Payment...</>
                     ) : (
-                      <><FaLock /> Pay ₹{intent === "extend" ? extAmount : payable} Securely</>
+                      <><FaLock size={12} /> Pay ₹{intent === "extend" ? extAmount : payable} Securely</>
                     )}
                   </button>
 
                   {processing && (
-                    <p className="text-center text-xs text-neon-blue mt-3 animate-pulse">
-                      Please do not close this window...
+                    <p className="text-center text-xs text-[#5B4DF5] mt-3 animate-pulse font-medium">
+                      Confirming transaction with gateway...
                     </p>
                   )}
                 </div>
@@ -346,46 +345,45 @@ export default function PaymentPage() {
 
             {/* RIGHT: Order Summary */}
             <div className="lg:col-span-2">
-              <div className="bg-[#0f1629] border border-white/10 rounded-2xl overflow-hidden sticky top-24">
-                <div className="h-1 w-full bg-gradient-to-r from-neon-green to-neon-blue" />
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-white mb-5">Order Summary</h3>
+              <div className="bg-white dark:bg-[#131C31] border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 shadow-sm sticky top-24 transition-colors duration-200">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 font-heading">Order Summary</h3>
 
-                  <div className="space-y-4 mb-6">
-                    <SummaryRow icon={<FaParking className="text-neon-blue" />}   label="Parking"  value={parkingName} />
-                    <SummaryRow icon={<span className="text-neon-purple text-xs font-bold">#</span>} label="Slot"
-                      value={<span className="font-mono text-neon-purple font-bold">#{slotId}</span>} />
+                  <div className="space-y-1 mb-5">
+                    <SummaryRow icon={<FaParking className="text-[#5B4DF5]" />} label="Parking" value={parkingName} />
+                    <SummaryRow icon={<span className="text-[#5B4DF5] text-xs font-bold">#</span>} label="Slot"
+                      value={<span className="font-mono text-[#5B4DF5] font-bold">#{slotId}</span>} />
                     {vehicleNumber && (
-                      <SummaryRow icon={<span className="text-gray-500 text-xs">🚗</span>} label="Vehicle" value={vehicleNumber} />
+                      <SummaryRow icon={<span className="text-slate-400 text-xs">🚗</span>} label="Vehicle" value={vehicleNumber} />
                     )}
                     {intent !== "extend" && intent !== "penalty" && intent !== "final" && (
-                      <SummaryRow icon={<FaClock className="text-yellow-400" />} label="Duration"
+                      <SummaryRow icon={<FaClock className="text-amber-500" />} label="Duration"
                         value={`${duration} hr${duration !== 1 ? "s" : ""}`} />
                     )}
                     {intent === "extend" && (
-                      <SummaryRow icon={<FaClock className="text-yellow-400" />} label="Extension" value={`+${extHours} hr${extHours !== 1 ? "s" : ""}`} />
+                      <SummaryRow icon={<FaClock className="text-amber-500" />} label="Extension" value={`+${extHours} hr${extHours !== 1 ? "s" : ""}`} />
                     )}
-                    <SummaryRow icon={<FaRupeeSign className="text-gray-400" />} label="Rate" value={`₹${ratePerHour}/hr`} />
+                    <SummaryRow icon={<FaRupeeSign className="text-slate-400" />} label="Hourly Rate" value={`₹${ratePerHour}/hr`} />
                     {penaltyAmount > 0 && (
-                      <SummaryRow icon={<span className="text-neon-red text-xs">⚠</span>} label="Overtime Penalty"
-                        value={<span className="text-neon-red font-bold">₹{penaltyAmount}</span>} />
+                      <SummaryRow icon={<span className="text-rose-600 text-xs">⚠</span>} label="Overtime Charge"
+                        value={<span className="text-rose-600 font-bold">₹{penaltyAmount}</span>} />
                     )}
                   </div>
 
-                  <div className="border-t border-white/10 pt-4 mb-6">
+                  <div className="border-t border-slate-100 dark:border-slate-800 pt-4 mb-6">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300 font-semibold">Total</span>
-                      <span className="text-3xl font-black text-neon-green">
+                      <span className="text-slate-700 dark:text-slate-300 font-semibold text-sm">Total Payable</span>
+                      <span className="text-2xl font-extrabold text-[#5B4DF5] font-heading">
                         ₹{intent === "extend" ? extAmount : payable}
                       </span>
                     </div>
                   </div>
 
                   {/* Trust Badges */}
-                  <div className="space-y-2">
-                    {["256-bit SSL encrypted", "Razorpay secured · Test Mode", "Instant booking confirmation"].map(t => (
-                      <div key={t} className="flex items-center gap-2 text-xs text-gray-500">
-                        <FaCheckCircle className="text-neon-green/70 shrink-0" /> {t}
+                  <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                    {["256-bit SSL encrypted", "Razorpay / Bank grade gateway", "Instant booking confirmation"].map(t => (
+                      <div key={t} className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                        <FaCheckCircle className="text-emerald-500 shrink-0 text-xs" /> {t}
                       </div>
                     ))}
                   </div>

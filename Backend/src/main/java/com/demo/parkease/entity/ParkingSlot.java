@@ -15,7 +15,7 @@ import lombok.*;
 @Entity
 @Table(name = "parking_slots", indexes = {
     @Index(name = "idx_slot_parking", columnList = "parking_id"),
-    @Index(name = "idx_slot_status", columnList = "status"),
+    @Index(name = "idx_slot_status", columnList = "slot_status"),
     @Index(name = "idx_slot_disabled", columnList = "disabled"),
     @Index(name = "idx_slot_vehicle_type", columnList = "vehicle_type")
 })

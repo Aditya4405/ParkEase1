@@ -7,6 +7,9 @@ export const getToken = () => localStorage.getItem("parkease_token");
 export const getUserId = () => localStorage.getItem("parkease_userId");
 export const getUserName = () => localStorage.getItem("parkease_name");
 export const getUserRole = () => localStorage.getItem("parkease_role");
+export const getOwnerAppStatus = () => localStorage.getItem("parkease_owner_app_status");
+export const getOwnerAppRef = () => localStorage.getItem("parkease_owner_app_ref");
+export const getRejectionReason = () => localStorage.getItem("parkease_rejection_reason");
 
 export const saveAuth = (data) => {
   localStorage.setItem("parkease_token", data.token);
@@ -15,13 +18,35 @@ export const saveAuth = (data) => {
   localStorage.setItem("parkease_role", data.role);
 };
 
+/** Save pending/rejected owner state (no JWT — just status for UI routing) */
+export const saveOwnerAppStatus = (data) => {
+  localStorage.setItem("parkease_owner_app_status", data.applicationStatus);
+  if (data.applicationRef) localStorage.setItem("parkease_owner_app_ref", data.applicationRef);
+  if (data.rejectionReason) localStorage.setItem("parkease_rejection_reason", data.rejectionReason);
+  // Store email for the pending/rejected pages to show
+  if (data.email) localStorage.setItem("parkease_pending_email", data.email);
+};
+
 export const clearAuth = () => {
   [
     "parkease_token", "parkease_userId", "parkease_name", "parkease_role",
     "parkease_active_booking", "parkease_account_status", "parkease_outstanding",
     "parkease_warnings", "parkease_booking_history",
+    "parkease_owner_app_status", "parkease_owner_app_ref", "parkease_rejection_reason",
+    "parkease_pending_email",
   ].forEach(k => localStorage.removeItem(k));
 };
+
+function sanitizeErrorMessage(msg) {
+  if (!msg || typeof msg !== "string") return "An unexpected error occurred.";
+  if (msg.includes("violates check constraint") || msg.includes("users_account_status_check")) {
+    return "Invalid account data. Please check your information and try again.";
+  }
+  if (msg.includes("could not execute statement") || msg.includes("SQL [") || msg.includes("DataIntegrityViolationException")) {
+    return "Unable to save your request to the database. Please try again.";
+  }
+  return msg;
+}
 
 // ── Core fetch wrapper ────────────────────────────────────────────────────────
 async function request(path, options = {}) {
@@ -36,7 +61,38 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     let msg = `HTTP ${res.status}`;
+    let body = null;
+    try { body = await res.json(); msg = body.message || body.error || msg; } catch { }
+    msg = sanitizeErrorMessage(msg);
+    // Attach extra fields for owner pending/rejected handling
+    const err = new Error(msg);
+    if (body) {
+      err.applicationStatus = body.applicationStatus;
+      err.applicationRef = body.applicationRef;
+      err.rejectionReason = body.rejectionReason;
+    }
+    throw err;
+  }
+
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+/** Multipart/form-data request — used for owner application submission */
+async function requestMultipart(path, formData) {
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
     try { const body = await res.json(); msg = body.message || body.error || msg; } catch { }
+    msg = sanitizeErrorMessage(msg);
     throw new Error(msg);
   }
 
@@ -55,6 +111,26 @@ export const api = {
 export const authAPI = {
   login: (body) => api.post("/auth/login", body),
   register: (body) => api.post("/auth/register", body),
+};
+
+// ── Owner Application (applicant-facing) ──────────────────────────────────────
+export const ownerApplicationAPI = {
+  /** Submit owner application as multipart form */
+  submit: (formData) => requestMultipart("/owner-applications/submit", formData),
+  /** Get current user's application status — requires JWT */
+  getMyApplication: () => request("/owner-applications/me"),
+  /** Check application status by reference without requiring JWT */
+  checkStatusByRef: (ref) => request(`/owner-applications/status/${encodeURIComponent(ref)}`),
+};
+
+// ── Owner Approvals (admin-facing) ────────────────────────────────────────────
+export const ownerApprovalAPI = {
+  getAll: (status) => api.get(status ? `/admin/owner-approvals?status=${status}` : "/admin/owner-approvals"),
+  getStats: () => api.get("/admin/owner-approvals/stats"),
+  getById: (id) => api.get(`/admin/owner-approvals/${id}`),
+  approve: (id, body) => api.post(`/admin/owner-approvals/${id}/approve`, body || {}),
+  reject: (id, body) => api.post(`/admin/owner-approvals/${id}/reject`, body),
+  markUnderReview: (id) => api.post(`/admin/owner-approvals/${id}/review`),
 };
 
 // ── User — Parkings ───────────────────────────────────────────────────────────
@@ -121,3 +197,6 @@ export const chatAPI = {
   sendMessage: (body) => api.post("/chat", body),
   clearHistory: (userId) => api.delete(`/chat/history/${userId}`),
 };
+
+// ── Document download URL helper ──────────────────────────────────────────────
+export const getDocumentUrl = (documentId) => `${BASE}/documents/${documentId}`;

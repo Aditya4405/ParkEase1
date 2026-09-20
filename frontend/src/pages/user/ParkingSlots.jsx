@@ -83,98 +83,97 @@ function BookingModal({ slot, parkingId, parkingName, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-[#0f1629] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden"
+        exit={{ scale: 0.95, opacity: 0 }}
+        className="bg-white dark:bg-[#131C31] border border-slate-200/80 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transition-colors duration-200"
       >
-        <div className="h-1 w-full bg-gradient-to-r from-neon-blue to-neon-purple" />
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h3 className="text-xl font-bold text-white">Book Slot</h3>
-              <p className="text-gray-400 text-sm mt-0.5">{parkingName}</p>
+              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white font-heading">Book Parking Slot</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{parkingName}</p>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 cursor-pointer">
               <FaTimes />
             </button>
           </div>
 
           {/* Slot Info */}
-          <div className="flex items-center gap-4 mb-6 p-4 bg-white/5 rounded-xl border border-white/5">
-            <div className="w-12 h-12 rounded-xl bg-neon-green/20 border border-neon-green/40 flex items-center justify-center text-neon-green text-xl">
+          <div className="flex items-center gap-4 mb-5 p-4 bg-[#EEF2FF] dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 rounded-2xl">
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 text-[#5B4DF5] dark:text-indigo-400 flex items-center justify-center text-xl shadow-sm">
               <VehicleIcon type={slot.vehicleType} />
             </div>
             <div className="flex-1">
-              <p className="text-white font-black font-mono text-lg">{slot.slotCode}</p>
-              <p className="text-gray-400 text-xs">{slot.vehicleTypeLabel || slot.vehicleType}</p>
+              <p className="text-slate-900 dark:text-white font-black font-mono text-base">{slot.slotCode}</p>
+              <p className="text-slate-500 dark:text-slate-400 text-xs">{slot.vehicleTypeLabel || slot.vehicleType}</p>
             </div>
             <div className="text-right">
-              <p className="text-neon-green font-black text-lg">₹{slot.costPerHour}</p>
-              <p className="text-gray-500 text-xs">/hour</p>
+              <p className="text-[#5B4DF5] font-extrabold text-lg font-heading">₹{slot.costPerHour}</p>
+              <p className="text-slate-500 text-xs">/hour</p>
             </div>
           </div>
 
           <div className="space-y-4">
             {/* Vehicle Number */}
             <div>
-              <label className="block text-gray-400 text-xs uppercase tracking-wider mb-1.5">Vehicle Number *</label>
+              <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">Vehicle Number *</label>
               <input
                 value={vehicleNumber}
                 onChange={(e) => setVehicleNumber(e.target.value.toUpperCase())}
                 placeholder="e.g. MH12 AB 1234"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-neon-blue focus:outline-none transition-all font-mono tracking-wider"
+                className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 focus:outline-none transition-all font-mono tracking-wider text-sm font-semibold"
               />
             </div>
 
             {/* Time Range */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-gray-400 text-xs uppercase tracking-wider mb-1.5">
+                <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
                   <FaClock className="inline mr-1" /> Start Time
                 </label>
                 <input
                   type="datetime-local"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:border-neon-blue focus:outline-none transition-all text-sm"
+                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-2.5 text-slate-900 dark:text-white focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 focus:outline-none transition-all text-xs font-medium"
                 />
               </div>
               <div>
-                <label className="block text-gray-400 text-xs uppercase tracking-wider mb-1.5">
+                <label className="block text-slate-700 dark:text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
                   <FaClock className="inline mr-1" /> End Time
                 </label>
                 <input
                   type="datetime-local"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:border-neon-blue focus:outline-none transition-all text-sm"
+                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-2.5 text-slate-900 dark:text-white focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 focus:outline-none transition-all text-xs font-medium"
                 />
               </div>
             </div>
 
             {/* Amount Preview */}
             {duration > 0 && (
-              <div className="p-4 bg-neon-green/5 border border-neon-green/20 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
-                  <FaRupeeSign className="text-neon-green" />
+              <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/60 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 text-xs font-medium">
+                  <FaRupeeSign className="text-emerald-600" />
                   {duration}h × ₹{slot.costPerHour}/hr
                 </div>
-                <p className="text-neon-green font-black text-xl">₹{amount}</p>
+                <p className="text-emerald-700 dark:text-emerald-300 font-extrabold text-base font-heading">₹{amount}</p>
               </div>
             )}
           </div>
 
           <div className="flex gap-3 mt-6">
-            <button onClick={onClose} className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold border border-white/10 transition-all">
+            <button onClick={onClose} className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-all cursor-pointer">
               Cancel
             </button>
             <button
               onClick={handleInitiate}
               disabled={loading}
-              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-neon-blue to-neon-purple text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 rounded-xl bg-[#5B4DF5] hover:bg-[#4F41E5] text-white font-bold text-xs shadow-md transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? <><FaSpinner className="animate-spin" /> Processing...</> : "Proceed to Pay"}
             </button>
@@ -242,12 +241,12 @@ export default function ParkingSlots() {
 
   const getSlotStyles = (slot) => {
     if (isBlocked || !slot.bookable) {
-      if (slot.status === "OCCUPIED")    return "bg-neon-red/10  border-neon-red/40  text-neon-red  cursor-not-allowed opacity-70";
-      if (slot.status === "RESERVED")   return "bg-yellow-500/10 border-yellow-500/40 text-yellow-500 cursor-not-allowed opacity-70";
-      if (slot.status === "MAINTENANCE")return "bg-gray-700/50   border-gray-600      text-gray-400  cursor-not-allowed opacity-50";
-      return "bg-gray-800 border-gray-700 text-gray-600 cursor-not-allowed opacity-50";
+      if (slot.status === "OCCUPIED")    return "bg-slate-100 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed";
+      if (slot.status === "RESERVED")   return "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400 cursor-not-allowed";
+      if (slot.status === "MAINTENANCE")return "bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 cursor-not-allowed opacity-60";
+      return "bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 cursor-not-allowed";
     }
-    return "bg-neon-green/10 border-neon-green/50 text-neon-green hover:bg-neon-green/25 hover:shadow-[0_0_18px_rgba(34,197,94,0.4)] cursor-pointer";
+    return "bg-white dark:bg-[#131C31] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 hover:border-[#5B4DF5] hover:text-[#5B4DF5] hover:bg-[#EEF2FF]/40 dark:hover:bg-indigo-950/40 shadow-sm cursor-pointer";
   };
 
   const handleSlotClick = (slot) => {
@@ -267,15 +266,15 @@ export default function ParkingSlots() {
 
           {/* Account Block Banner */}
           {isBlocked && (
-            <div className="mb-6 flex items-center gap-4 p-4 bg-neon-red/10 border border-neon-red/30 rounded-2xl">
-              <FaBan className="text-neon-red text-xl shrink-0" />
+            <div className="mb-6 flex items-center gap-4 p-4 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-2xl">
+              <FaBan className="text-rose-600 dark:text-rose-400 text-xl shrink-0" />
               <div className="flex-1">
-                <p className="text-neon-red font-black text-sm">
+                <p className="text-rose-700 dark:text-rose-300 font-bold text-sm">
                   {accountStatus === "SUSPENDED" ? "Account Suspended" : "Bookings Blocked — Payment Pending"}
                 </p>
-                <p className="text-gray-400 text-xs mt-0.5">Clear ₹{outstanding} outstanding dues to unlock new bookings.</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Clear ₹{outstanding} outstanding dues to unlock new bookings.</p>
               </div>
-              <button onClick={() => navigate("/user/payments")} className="px-4 py-2 bg-neon-red text-white rounded-xl font-bold text-sm hover:bg-red-500 transition-all whitespace-nowrap">
+              <button onClick={() => navigate("/user/payments")} className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold text-xs shadow-sm transition-all whitespace-nowrap cursor-pointer">
                 Pay ₹{outstanding}
               </button>
             </div>
@@ -284,32 +283,32 @@ export default function ParkingSlots() {
           {/* Header */}
           <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-white">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight font-heading">
                 {loading ? "Loading..." : (parking?.name || "Parking Slots")}
               </h2>
               {parking && (
-                <p className="text-gray-400 text-sm mt-1">{parking.location}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{parking.location}</p>
               )}
               {!loading && (
-                <div className="flex gap-4 mt-2 text-sm">
-                  <span className="text-neon-green font-bold">{available} Available</span>
-                  <span className="text-gray-500">·</span>
-                  <span className="text-neon-red font-bold">{occupied} Occupied</span>
-                  <span className="text-gray-500">·</span>
-                  <span className="text-gray-400">{slots.length} Total</span>
+                <div className="flex items-center gap-3 mt-2 text-xs font-semibold">
+                  <span className="text-emerald-600 dark:text-emerald-400">{available} Available</span>
+                  <span className="text-slate-300 dark:text-slate-700">·</span>
+                  <span className="text-rose-600 dark:text-rose-400">{occupied} Occupied</span>
+                  <span className="text-slate-300 dark:text-slate-700">·</span>
+                  <span className="text-slate-500 dark:text-slate-400">{slots.length} Total</span>
                 </div>
               )}
             </div>
 
             <div className="flex items-center gap-3 flex-wrap">
               {/* Vehicle type filter */}
-              <div className="flex gap-1 bg-dark-card border border-white/10 rounded-lg p-1">
+              <div className="flex gap-1 bg-white dark:bg-[#131C31] border border-slate-200/80 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                 {vehicleTypes.map(t => (
                   <button
                     key={t}
                     onClick={() => setTypeFilter(t)}
-                    className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
-                      typeFilter === t ? "bg-neon-blue text-white" : "text-gray-400 hover:text-white"
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      typeFilter === t ? "bg-[#5B4DF5] text-white shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                     }`}
                   >
                     {t}
@@ -318,11 +317,11 @@ export default function ParkingSlots() {
               </div>
 
               {/* Legend */}
-              <div className="flex gap-3 bg-dark-card/50 p-3 rounded-lg border border-white/5 text-xs text-gray-300">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-neon-green shadow-[0_0_5px_rgba(34,197,94,0.8)]" /> Free</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /> Reserved</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-neon-red" /> Occupied</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-gray-600" /> Maintenance</span>
+              <div className="flex gap-3.5 bg-white dark:bg-[#131C31] p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 shadow-sm">
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#5B4DF5]" /> Free</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Reserved</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-slate-400" /> Occupied</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600" /> Maintenance</span>
               </div>
             </div>
           </div>

@@ -15,12 +15,12 @@ const PENALTY_INTERVAL_MS  = 15 * 60 * 1000;
 
 function InfoTile({ icon, label, value }) {
   return (
-    <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-      <div className="flex items-center gap-2 mb-1">
-        {icon}
-        <p className="text-gray-500 text-xs uppercase tracking-wide">{label}</p>
+    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200/80 dark:border-slate-700/60">
+      <div className="flex items-center gap-2 mb-1.5">
+        <div className="text-primary-600 dark:text-primary-400 text-sm">{icon}</div>
+        <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">{label}</p>
       </div>
-      <p className="text-white font-bold">{value}</p>
+      <div className="text-slate-900 dark:text-white font-bold text-base">{value}</div>
     </div>
   );
 }
@@ -75,7 +75,7 @@ export default function ActiveParking() {
     return (
       <DashboardLayout role="USER">
         <div className="flex items-center justify-center h-96">
-          <FaSpinner className="text-neon-blue text-4xl animate-spin" />
+          <FaSpinner className="text-primary-600 text-4xl animate-spin" />
         </div>
       </DashboardLayout>
     );
@@ -94,10 +94,10 @@ export default function ActiveParking() {
   const fmt       = (d) => d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
 
   const timerColor = expired
-    ? "text-neon-red"
+    ? "text-rose-600 dark:text-rose-400"
     : hours === 0 && mins < 15
-      ? "text-yellow-400"
-      : "text-neon-green";
+      ? "text-amber-500 dark:text-amber-400"
+      : "text-primary-600 dark:text-primary-400";
 
   const totalDurationMs = new Date(booking.endTime).getTime() - new Date(booking.startTime).getTime();
 
@@ -119,8 +119,6 @@ export default function ActiveParking() {
 
   const handleEndParking = async () => {
     if (penaltyAmount > 0) {
-      // Has overtime → go to FinalBillPage to pay/defer penalty
-      // First initiate penalty payment on backend
       try {
         const penaltyRes = await paymentsAPI.penaltyInitiate({
           bookingId:   booking.bookingId,
@@ -137,7 +135,6 @@ export default function ActiveParking() {
           },
         });
       } catch (err) {
-        // If backend call fails, fall through with client-side penalty amount
         navigate("/user/final-bill", {
           state: {
             booking,
@@ -150,12 +147,10 @@ export default function ActiveParking() {
       return;
     }
 
-    // No penalty — end parking cleanly
     setEnding(true);
     try {
       await paymentsAPI.endParking(booking.bookingId);
 
-      // Archive to history and clear active
       const history = JSON.parse(localStorage.getItem("parkease_booking_history") || "[]");
       history.push({ ...booking, endedAt: new Date().toISOString(), status: "COMPLETED", finalAmount: booking.totalPaid });
       localStorage.setItem("parkease_booking_history", JSON.stringify(history));
@@ -170,37 +165,31 @@ export default function ActiveParking() {
   };
 
   const slotBadge = expired
-    ? { label: "OVERDUE", cls: "bg-neon-red/20 text-neon-red border-neon-red/30" }
-    : { label: "LOCKED",  cls: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" };
+    ? { label: "OVERDUE", cls: "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800/60" }
+    : { label: "ACTIVE & LOCKED",  cls: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60" };
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-right" autoClose={3000} style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999, top: "5rem", right: "1rem" }} />
       <DashboardLayout role="USER">
         <div className="max-w-2xl mx-auto">
 
           {/* ── Booking Confirmed Banner ──────────────────────────── */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative bg-gradient-to-r from-neon-green/20 to-neon-blue/10 border border-neon-green/30 rounded-2xl p-6 mb-8 overflow-hidden flex items-center gap-5"
+            className="bg-emerald-50/90 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 rounded-2xl p-6 mb-8 flex items-center gap-5 shadow-sm"
           >
-            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle, #22c55e 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              className="w-14 h-14 rounded-full bg-neon-green/20 border-2 border-neon-green flex items-center justify-center shrink-0 shadow-[0_0_25px_rgba(34,197,94,0.4)]"
-            >
-              <FaCheckCircle className="text-neon-green text-3xl" />
-            </motion.div>
+            <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center shrink-0 shadow-sm">
+              <FaCheckCircle className="text-2xl" />
+            </div>
             <div>
-              <h1 className="text-2xl font-black text-white">Booking Confirmed!</h1>
-              <p className="text-neon-green/80 text-sm mt-0.5">
-                Payment successful · Slot {booking.slotId} is now locked for you
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white">Active Parking Session</h1>
+              <p className="text-emerald-800 dark:text-emerald-300/90 text-sm mt-0.5">
+                Payment verified · Slot {booking.slotId} is reserved & locked for your vehicle
               </p>
               {booking.transactionId && (
-                <p className="text-gray-500 text-xs mt-1 font-mono">TXN: {booking.transactionId}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1 font-mono">TXN: {booking.transactionId}</p>
               )}
             </div>
           </motion.div>
@@ -209,23 +198,25 @@ export default function ActiveParking() {
           <AnimatePresence>
             {expired && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mb-6 bg-neon-red/10 border border-neon-red/40 rounded-2xl p-5 flex items-center gap-4"
+                className="mb-6 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 rounded-2xl p-5 flex items-center gap-4 shadow-sm"
               >
-                <FaSkullCrossbones className="text-neon-red text-2xl shrink-0 animate-pulse" />
+                <div className="w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-rose-600 flex items-center justify-center shrink-0">
+                  <FaSkullCrossbones className="text-xl" />
+                </div>
                 <div className="flex-1">
-                  <p className="text-neon-red font-black text-sm uppercase tracking-wide mb-1">
-                    Parking Time Exceeded — Penalty Running
+                  <p className="text-rose-700 dark:text-rose-300 font-bold text-sm uppercase tracking-wide mb-0.5">
+                    Parking Session Expired — Overtime Penalty Running
                   </p>
-                  <p className="text-gray-400 text-xs">
+                  <p className="text-slate-600 dark:text-slate-400 text-xs">
                     ₹{PENALTY_PER_INTERVAL} penalty per 15 minutes of overtime.
                   </p>
-                  <div className="flex items-center gap-4 mt-2">
-                    <span className="text-white text-sm font-mono">
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="text-slate-700 dark:text-slate-300 text-sm font-mono font-medium">
                       Overtime: {String(oHours).padStart(2,"0")}:{String(oMins).padStart(2,"0")}:{String(oSecs).padStart(2,"0")}
                     </span>
-                    <span className="px-3 py-1 bg-neon-red/20 rounded-full text-neon-red font-black text-sm border border-neon-red/30">
+                    <span className="px-2.5 py-0.5 bg-rose-100 dark:bg-rose-900/60 rounded-full text-rose-700 dark:text-rose-300 font-bold text-xs border border-rose-200 dark:border-rose-700/60">
                       Penalty: ₹{penaltyAmount}
                     </span>
                   </div>
@@ -236,43 +227,49 @@ export default function ActiveParking() {
 
           {/* ── Session Card ───────────────────────────────────── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="bg-[#0f1629] border border-white/10 rounded-2xl overflow-hidden mb-6"
+            transition={{ delay: 0.1 }}
+            className="parkease-card rounded-2xl overflow-hidden mb-6 shadow-sm"
           >
-            <div className="h-1 w-full bg-gradient-to-r from-neon-blue via-neon-purple to-neon-blue" />
             <div className="p-7">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-white">Active Parking Session</h2>
-                <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black border ${slotBadge.cls}`}>
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Session Details</h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Real-time status and allocation</p>
+                </div>
+                <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${slotBadge.cls}`}>
                   <FaLock size={10} /> {slotBadge.label}
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <InfoTile icon={<FaParking className="text-neon-blue text-xl" />}    label="Parking"   value={booking.parkingName} />
-                <InfoTile icon={<span className="text-neon-purple font-black text-lg">#</span>} label="Slot ID"
-                  value={<span className="font-mono text-neon-purple font-black">{booking.slotId}</span>} />
-                <InfoTile icon={<FaCalendarAlt className="text-gray-400 text-lg" />} label="Started At" value={fmt(startTime)} />
-                <InfoTile icon={<FaClock className="text-yellow-400 text-lg" />}     label="Expires At" value={fmt(endTime)} />
-                <InfoTile icon={<FaRupeeSign className="text-neon-green text-lg" />} label="Total Paid"
-                  value={<span className="text-neon-green font-black">₹{booking.totalPaid}</span>} />
-                <InfoTile icon={<FaClock className="text-neon-blue text-lg" />}      label="Vehicle"    value={booking.vehicleNumber || "—"} />
+                <InfoTile icon={<FaParking />} label="Parking Location" value={booking.parkingName} />
+                <InfoTile icon={<span className="font-mono text-base font-bold">#</span>} label="Slot ID"
+                  value={<span className="font-mono text-primary-600 dark:text-primary-400 font-bold">{booking.slotId}</span>} />
+                <InfoTile icon={<FaCalendarAlt />} label="Start Time" value={fmt(startTime)} />
+                <InfoTile icon={<FaClock />} label="Expiry Time" value={fmt(endTime)} />
+                <InfoTile icon={<FaRupeeSign />} label="Base Amount Paid"
+                  value={<span className="text-emerald-600 dark:text-emerald-400 font-bold">₹{booking.totalPaid}</span>} />
+                <InfoTile icon={<FaClock />} label="Vehicle Number" value={booking.vehicleNumber || "—"} />
               </div>
 
               {/* ── Live Timer ─────────────────────────────────────── */}
-              <div className={`rounded-xl p-5 text-center border ${expired ? "bg-neon-red/5 border-neon-red/30" : "bg-black/30 border-white/10"}`}>
-                <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">
+              <div className={`rounded-xl p-6 text-center border transition-all ${
+                expired 
+                  ? "bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/40" 
+                  : "bg-slate-50 dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700/60"
+              }`}>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
                   {expired ? "Session Expired" : "Time Remaining"}
                 </p>
-                <div className={`text-5xl font-black font-mono ${timerColor} transition-colors`}>
+                <div className={`text-5xl font-black font-mono tracking-tight ${timerColor} transition-colors mb-3`}>
                   {String(hours).padStart(2,"0")}:{String(mins).padStart(2,"0")}:{String(secs).padStart(2,"0")}
                 </div>
                 {!expired && (
-                  <div className="mt-3 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="max-w-md mx-auto h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <motion.div
-                      className={`h-full rounded-full transition-colors ${hours === 0 && mins < 15 ? "bg-yellow-400" : "bg-neon-green"}`}
+                      className={`h-full rounded-full transition-colors ${hours === 0 && mins < 15 ? "bg-amber-500" : "bg-primary-600"}`}
                       style={{ width: `${Math.max(0, (timeLeft / totalDurationMs) * 100).toFixed(1)}%` }}
                       transition={{ duration: 1 }}
                     />
@@ -284,41 +281,41 @@ export default function ActiveParking() {
 
           {/* ── Action Buttons ─────────────────────────────────── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
+            transition={{ delay: 0.2 }}
             className="grid grid-cols-2 gap-4"
           >
             <button
               onClick={handleExtend}
               disabled={ending}
-              className="flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white border border-neon-blue/40 bg-neon-blue/10 hover:bg-neon-blue/20 hover:border-neon-blue/60 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all disabled:opacity-50"
+              className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/70 shadow-sm transition-all disabled:opacity-50"
             >
-              <FaPlus /> Extend Parking
+              <FaPlus className="text-primary-600 dark:text-primary-400" /> Extend Parking
             </button>
 
             <button
               onClick={handleEndParking}
               disabled={ending}
-              className={`flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all ${
+              className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-semibold transition-all shadow-sm ${
                 expired
-                  ? "bg-neon-red text-white hover:bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse"
-                  : "bg-gradient-to-r from-neon-red/80 to-neon-red text-white hover:shadow-[0_0_20px_rgba(239,68,68,0.4)]"
+                  ? "bg-rose-600 text-white hover:bg-rose-700"
+                  : "bg-rose-600 text-white hover:bg-rose-700"
               } disabled:opacity-50`}
             >
-              {ending ? <><FaSpinner className="animate-spin" /> Ending...</> : <><FaStop /> {expired ? "End & Pay Penalty" : "End Parking"}</>}
+              {ending ? <><FaSpinner className="animate-spin" /> Ending Session...</> : <><FaStop /> {expired ? "End & Settle Overtime" : "End Parking Now"}</>}
             </button>
           </motion.div>
 
           {!expired && hours === 0 && mins < 15 && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="mt-4 text-center text-xs text-yellow-400/70 flex items-center justify-center gap-1">
-              <FaExclamationTriangle size={10} />
-              Extend now to avoid ₹{PENALTY_PER_INTERVAL}/15 min overtime penalty
+              className="mt-4 text-center text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center justify-center gap-1.5">
+              <FaExclamationTriangle size={12} />
+              Session ending soon. Extend in advance to prevent overtime penalty charges.
             </motion.p>
           )}
         </div>
       </DashboardLayout>
     </>
   );
-}
+}

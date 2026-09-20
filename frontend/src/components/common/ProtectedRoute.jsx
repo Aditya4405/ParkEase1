@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { getToken, getUserRole } from "../../api/api";
+import { getToken, getUserRole, getOwnerAppStatus } from "../../api/api";
 
 /**
  * Wraps any route that requires authentication.
@@ -10,11 +10,18 @@ import { getToken, getUserRole } from "../../api/api";
  *     element={<ProtectedRoute role="USER"><UserDashboard /></ProtectedRoute>} />
  */
 export default function ProtectedRoute({ children, role }) {
-  const token    = getToken();
+  const token = getToken();
   const userRole = getUserRole();
+  const ownerAppStatus = getOwnerAppStatus();
 
-  // No token → redirect to login
+  // No token → check if pending/rejected owner before redirecting to login
   if (!token) {
+    if (ownerAppStatus === "PENDING") {
+      return <Navigate to="/owner-pending" replace />;
+    }
+    if (ownerAppStatus === "REJECTED") {
+      return <Navigate to="/owner-rejected" replace />;
+    }
     return <Navigate to="/login" replace />;
   }
 

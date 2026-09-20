@@ -20,7 +20,7 @@ export default function OwnerSlots() {
   return (
     <DashboardLayout role="OWNER">
       <div className="flex items-center justify-center h-96">
-        <FaSpinner className="text-neon-blue text-4xl animate-spin" />
+        <FaSpinner className="text-primary-600 text-3xl animate-spin" />
       </div>
     </DashboardLayout>
   );

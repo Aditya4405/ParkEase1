@@ -13,7 +13,6 @@ export default function Register() {
   const [email,       setEmail]       = useState("");
   const [password,    setPassword]    = useState("");
   const [phone,       setPhone]       = useState("");
-  const [role,        setRole]        = useState("USER");
   const [showPassword,setShowPassword]= useState(false);
   const [loading,     setLoading]     = useState(false);
 
@@ -22,14 +21,14 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const data = await authAPI.register({ name, email, password, phone, role });
+      // Regular registration always creates USER accounts.
+      // Owners must use the dedicated owner registration flow.
+      const data = await authAPI.register({ name, email, password, phone });
       saveAuth(data);
       toast.success("Account created successfully!");
 
       setTimeout(() => {
-        if (data.role === "USER")  navigate("/user/dashboard");
-        if (data.role === "OWNER") navigate("/owner/dashboard");
-        if (data.role === "ADMIN") navigate("/admin/dashboard");
+        navigate("/user/dashboard");
       }, 800);
     } catch (err) {
       toast.error(err.message || "Registration failed.");
@@ -61,7 +60,8 @@ export default function Register() {
         className="relative z-10 w-full max-w-md bg-[#0a0a1a]/60 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-[0_0_40px_rgba(139,92,246,0.15)] max-h-[85vh] overflow-y-auto"
       >
         <div className="text-center mb-6">
-          <p className="text-xl font-medium text-gray-200">Create Account</p>
+          <p className="text-xl font-medium text-gray-200">Create User Account</p>
+          <p className="text-xs text-gray-500 mt-1">Sign up to find and book parking spots</p>
         </div>
 
         <div className="space-y-4">
@@ -93,21 +93,6 @@ export default function Register() {
               </button>
             </div>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide ml-1">Select Role</label>
-            <div className="relative">
-              <select value={role} onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-neon-purple focus:ring-1 focus:ring-neon-purple focus:outline-none transition-all appearance-none cursor-pointer">
-                <option value="USER"  className="bg-[#0f0c29]">User</option>
-                <option value="OWNER" className="bg-[#0f0c29]">Owner</option>
-                <option value="ADMIN" className="bg-[#0f0c29]">Admin</option>
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-              </div>
-            </div>
-          </div>
         </div>
 
         <motion.button
@@ -124,6 +109,16 @@ export default function Register() {
           Already have an account?{" "}
           <Link to="/login" className="text-white font-bold hover:text-neon-purple hover:underline transition-colors decoration-2 underline-offset-4">Login</Link>
         </p>
+
+        {/* Owner registration link */}
+        <div className="mt-4 p-3 rounded-xl bg-neon-blue/5 border border-neon-blue/20">
+          <p className="text-center text-xs text-gray-400">
+            Want to list your parking spaces?{" "}
+            <Link to="/owner/register" className="text-neon-blue hover:text-blue-400 font-bold hover:underline transition-colors underline-offset-4">
+              Become a Parking Partner →
+            </Link>
+          </p>
+        </div>
       </motion.div>
     </div>
   );

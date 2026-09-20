@@ -8,31 +8,31 @@ export default function RevenueChart({ revenueData }) {
     const data = rawData.slice(-7).map((item) => ({
         day: item.day,
         amount: money(item.amount),
-        value: maxAmount > 0 ? Math.max(6, Math.round(((Number(item.amount) || 0) / maxAmount) * 100)) : 0,
+        value: maxAmount > 0 ? Math.max(8, Math.round(((Number(item.amount) || 0) / maxAmount) * 100)) : 0,
     }));
 
     return (
-        <div className="bg-dark-card/60 backdrop-blur-xl border border-white/5 rounded-2xl p-6 relative overflow-hidden">
+        <div className="parkease-card rounded-2xl p-6 relative overflow-hidden shadow-sm">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h3 className="text-lg font-bold text-white">Revenue Trends</h3>
-                    <p className="text-xs text-gray-400">Daily earnings from completed bookings</p>
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">7-Day Revenue Velocity</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Daily income generated across completed parking sessions</p>
                 </div>
             </div>
 
-            <div className="relative h-40 flex items-end justify-between gap-4 px-2">
+            <div className="relative h-48 flex items-end justify-between gap-4 px-2">
                 {/* Background Grid Lines */}
-                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
-                    <div className="w-full h-px bg-white/20 border-t border-dashed border-white/50"></div>
-                    <div className="w-full h-px bg-white/20 border-t border-dashed border-white/50"></div>
-                    <div className="w-full h-px bg-white/20 border-t border-dashed border-white/50"></div>
-                    <div className="w-full h-px bg-white/20 border-t border-dashed border-white/50"></div>
-                    <div className="w-full h-px bg-white"></div> {/* Base line */}
+                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+                    <div className="w-full h-px border-t border-dashed border-slate-200 dark:border-slate-800"></div>
+                    <div className="w-full h-px border-t border-dashed border-slate-200 dark:border-slate-800"></div>
+                    <div className="w-full h-px border-t border-dashed border-slate-200 dark:border-slate-800"></div>
+                    <div className="w-full h-px border-t border-dashed border-slate-200 dark:border-slate-800"></div>
+                    <div className="w-full h-px bg-slate-200 dark:bg-slate-800"></div>
                 </div>
 
                 {data.length === 0 && (
-                    <div className="relative z-10 w-full h-full flex items-center justify-center text-gray-500 text-sm">
-                        No completed booking revenue yet.
+                    <div className="relative z-10 w-full h-full flex items-center justify-center text-slate-400 text-xs">
+                        No completed booking transactions recorded yet.
                     </div>
                 )}
 
@@ -42,20 +42,21 @@ export default function RevenueChart({ revenueData }) {
                             <motion.div
                                 initial={{ height: 0 }}
                                 animate={{ height: `${item.value}%` }}
-                                transition={{ duration: 0.8, delay: index * 0.1, type: "spring" }}
-                                className="w-full max-w-[24px] bg-gradient-to-t from-neon-purple/80 to-neon-blue rounded-t-md relative group-hover:from-neon-purple group-hover:to-neon-blue/80 transition-all shadow-[0_0_10px_rgba(139,92,246,0.3)] hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] cursor-pointer"
+                                transition={{ duration: 0.7, delay: index * 0.08, type: "spring" }}
+                                className="w-full max-w-[28px] bg-gradient-to-t from-primary-600 to-indigo-500 hover:from-primary-700 hover:to-indigo-600 rounded-t-lg relative transition-all shadow-xs cursor-pointer"
                             >
                                 {/* Tooltip */}
-                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-dark-bg text-white text-[10px] font-bold py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 border border-white/10 whitespace-nowrap shadow-xl z-20 pointer-events-none">
+                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold py-1 px-2.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg z-20 pointer-events-none whitespace-nowrap">
                                     {item.amount}
-                                    <div className="absolute bottom-[-4px] left-1/2 -translate-x-1/2 w-2 h-2 bg-dark-bg border-r border-b border-white/10 transform rotate-45"></div>
+                                    <div className="absolute bottom-[-3px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-slate-900 transform rotate-45"></div>
                                 </div>
                             </motion.div>
                         </div>
-                        <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">{item.day}</span>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">{item.day}</span>
                     </div>
                 ))}
             </div>
         </div>
     );
 }
+

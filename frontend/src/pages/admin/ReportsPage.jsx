@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaFileDownload, FaUsers, FaParking, FaHistory,
@@ -74,37 +74,35 @@ export default function ReportsPage() {
       id: "users",
       title: "User Registry Report",
       desc: "Export complete profiles, account statuses, lifetime booking counts, and outstanding balances.",
-      icon: <FaUsers className="text-blue-400" />
+      icon: <FaUsers className="text-blue-500" />
     },
     {
       id: "parkings",
       title: "Facility Operations Report",
       desc: "Export parking lots, owner associations, slot capacities, occupancy averages, and revenues.",
-      icon: <FaParking className="text-neon-blue" />
+      icon: <FaParking className="text-primary-600 dark:text-primary-400" />
     },
     {
       id: "bookings",
       title: "Booking Ledger Report",
       desc: "Full log of all customer reservations, slot assignments, vehicle numbers, and durations.",
-      icon: <FaHistory className="text-neon-purple" />
+      icon: <FaHistory className="text-purple-500" />
     },
     {
       id: "transactions",
       title: "Financial Settlements Report",
       desc: "Detailed record of payment transactions, payment gateways, receipts, and refund statuses.",
-      icon: <FaExchangeAlt className="text-neon-green" />
+      icon: <FaExchangeAlt className="text-emerald-500" />
     }
   ];
 
   return (
     <DashboardLayout role="ADMIN">
-      <ToastContainer theme="dark" position="top-right" autoClose={3000} />
-
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-black text-white">Compliance & Operational Reports</h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Compliance & Operational Reports</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Generate and export verifiable CSV audits from live database records
           </p>
         </div>
@@ -113,20 +111,20 @@ export default function ReportsPage() {
       {/* Report Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {reportCards.map((r) => (
-          <div key={r.id} className="bg-[#1e293b] border border-white/10 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+          <div key={r.id} className="parkease-card rounded-2xl p-6 flex flex-col justify-between shadow-sm">
             <div>
-              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg mb-4">
+              <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-lg mb-4 shadow-2xs">
                 {r.icon}
               </div>
-              <h3 className="text-base font-black text-white">{r.title}</h3>
-              <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">{r.desc}</p>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">{r.title}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">{r.desc}</p>
             </div>
 
             <div className="pt-6">
               <button
                 onClick={() => downloadReport(r.id)}
                 disabled={downloading === r.id}
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-neon-blue to-blue-600 hover:opacity-90 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all cursor-pointer"
+                className="parkease-btn-primary w-full py-2.5 px-4 text-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 {downloading === r.id ? (
                   <>

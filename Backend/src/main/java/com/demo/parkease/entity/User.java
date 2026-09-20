@@ -82,6 +82,10 @@ public class User {
     public enum AccountStatus {
         ACTIVE,
         PAYMENT_PENDING,
-        SUSPENDED
+        SUSPENDED,
+        /** Owner application submitted but not yet approved by admin. No login allowed. */
+        OWNER_PENDING,
+        /** Owner application was rejected by admin. No login allowed. */
+        OWNER_REJECTED
     }
 }

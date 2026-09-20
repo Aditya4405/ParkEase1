@@ -8,8 +8,14 @@ import Chatbot from "./components/common/Chatbot";
 // Public pages
 const LandingPage = lazy(() => import("./pages/Landing_page"));
 const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
+const RegisterChoice = lazy(() => import("./pages/RegisterChoice"));
+const UserRegister = lazy(() => import("./pages/UserRegister"));
 const Placeholder = lazy(() => import("./pages/Placeholder"));
+
+// Owner registration + application status (semi-public — no JWT required)
+const OwnerRegister = lazy(() => import("./pages/owner/OwnerRegister"));
+const OwnerApplicationPending = lazy(() => import("./pages/owner/OwnerApplicationPending"));
+const OwnerApplicationRejected = lazy(() => import("./pages/owner/OwnerApplicationRejected"));
 
 // User pages
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
@@ -47,6 +53,7 @@ const ReportsPage = lazy(() => import("./pages/admin/ReportsPage"));
 const AuditLogsPage = lazy(() => import("./pages/admin/AuditLogsPage"));
 const NotificationsPage = lazy(() => import("./pages/admin/NotificationsPage"));
 const AdminSettingsPage = lazy(() => import("./pages/admin/AdminSettingsPage"));
+const OwnerApprovalsPage = lazy(() => import("./pages/admin/OwnerApprovalsPage"));
 
 // Sleek fallback component for instant transitions
 const PageLoader = () => (
@@ -81,7 +88,15 @@ function App() {
             {/* -------- PUBLIC ROUTES -------- */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            {/* -------- REGISTRATION FLOWS (SEPARATE USER & OWNER) -------- */}
+            <Route path="/register" element={<RegisterChoice />} />
+            <Route path="/register/user" element={<UserRegister />} />
+            <Route path="/register/owner" element={<OwnerRegister />} />
+            <Route path="/owner/register" element={<OwnerRegister />} />
+            <Route path="/owner/application-pending" element={<OwnerApplicationPending />} />
+            <Route path="/owner-pending" element={<OwnerApplicationPending />} />
+            <Route path="/owner/application-rejected" element={<OwnerApplicationRejected />} />
+            <Route path="/owner-rejected" element={<OwnerApplicationRejected />} />
 
             {/* -------- USER ROUTES -------- */}
             <Route path="/user/dashboard" element={<U><UserDashboard /></U>} />
@@ -122,6 +137,7 @@ function App() {
             <Route path="/admin/audit-logs" element={<A><AuditLogsPage /></A>} />
             <Route path="/admin/notifications" element={<A><NotificationsPage /></A>} />
             <Route path="/admin/settings" element={<A><AdminSettingsPage /></A>} />
+            <Route path="/admin/owner-approvals" element={<A><OwnerApprovalsPage /></A>} />
 
             {/* -------- PLACEHOLDER ROUTES -------- */}
             <Route path="/settings" element={<Placeholder />} />
