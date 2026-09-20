@@ -30,10 +30,10 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-dark-bg text-white flex">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 flex transition-colors duration-200">
       <Sidebar role={role} />
 
-      <main className="flex-1 ml-64 relative overflow-hidden bg-dark-bg">
+      <main className="flex-1 ml-64 relative overflow-hidden bg-[#FAFAFA] dark:bg-[#0B1120]">
         {/* TopBar is z-40 — always above page content */}
         <TopBar
           onSearch={onSearch}
@@ -42,9 +42,9 @@ export default function DashboardLayout({
           toggleProfile={() => setShowProfile(true)}
         />
 
-        {/* Background Gradients */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-64 w-[500px] h-[500px] bg-neon-blue/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* Subtle Ambient Accent Gradient (matches landing page style) */}
+        <div className="absolute top-0 right-0 w-[500px] h-[350px] bg-gradient-to-b from-indigo-100/50 dark:from-indigo-950/20 to-transparent rounded-full blur-3xl pointer-events-none opacity-60" />
+        <div className="absolute top-48 left-10 w-[400px] h-[300px] bg-gradient-to-tr from-purple-100/40 dark:from-purple-950/15 to-transparent rounded-full blur-3xl pointer-events-none opacity-50" />
 
         {/* Page Content */}
         <div className="relative z-10 p-8 pt-24 min-h-screen">

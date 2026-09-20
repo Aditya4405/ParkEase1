@@ -4,10 +4,10 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("parkease_theme") || "dark";
+    return localStorage.getItem("parkease_theme") || "light";
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState("dark");
+  const [resolvedTheme, setResolvedTheme] = useState("light");
 
   useEffect(() => {
     const root = document.documentElement;
@@ -25,14 +25,14 @@ export function ThemeProvider({ children }) {
         root.classList.add("dark");
         root.classList.remove("light");
         root.setAttribute("data-theme", "dark");
-        body.classList.add("bg-dark-bg", "text-white");
-        body.classList.remove("bg-slate-50", "text-slate-900");
+        body.classList.add("bg-[#0B1120]", "text-slate-100");
+        body.classList.remove("bg-[#FAFAFA]", "text-slate-900", "bg-slate-50", "bg-dark-bg");
       } else {
         root.classList.add("light");
         root.classList.remove("dark");
         root.setAttribute("data-theme", "light");
-        body.classList.add("bg-slate-50", "text-slate-900");
-        body.classList.remove("bg-dark-bg", "text-white");
+        body.classList.add("bg-[#FAFAFA]", "text-slate-900");
+        body.classList.remove("bg-[#0B1120]", "text-slate-100", "bg-dark-bg", "text-white");
       }
     };
 
