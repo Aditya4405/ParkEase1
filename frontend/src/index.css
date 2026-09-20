@@ -50,6 +50,41 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   }
+
+  /* Universal high-contrast inputs for light & dark themes */
+  input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    color: var(--text-primary);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+/* Light mode safeguard: typed text in all form fields must be high-contrast and crystal clear */
+:root:not(.dark) input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+:root:not(.dark) select,
+:root:not(.dark) textarea {
+  color: #0f172a !important;
+}
+
+:root:not(.dark) input::placeholder,
+:root:not(.dark) textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Dark mode typed text & placeholder */
+.dark input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+.dark select,
+.dark textarea {
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
 }
 
 @layer utilities {
@@ -114,6 +149,7 @@
 
   /* ParkEase Form Input */
   .parkease-input {
+    width: 100%;
     background-color: var(--bg-card);
     border: 1px solid var(--border-elevated);
     color: var(--text-primary);
@@ -122,6 +158,9 @@
     font-size: 0.875rem;
     transition: all 0.2s ease;
     outline: none;
+  }
+  .parkease-input::placeholder {
+    color: var(--text-muted);
   }
   .parkease-input:focus {
     border-color: #5b4df5;

@@ -54,67 +54,88 @@ export default function Register() {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="relative z-10 w-full max-w-md bg-[#0a0a1a]/60 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-[0_0_40px_rgba(139,92,246,0.15)] max-h-[85vh] overflow-y-auto"
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="relative z-10 w-full max-w-md bg-white dark:bg-[#131C31] border border-slate-200/80 dark:border-slate-800 p-8 rounded-3xl shadow-xl max-h-[85vh] overflow-y-auto transition-colors duration-200"
       >
         <div className="text-center mb-6">
-          <p className="text-xl font-medium text-gray-200">Create User Account</p>
-          <p className="text-xs text-gray-500 mt-1">Sign up to find and book parking spots</p>
+          <p className="text-xl font-bold text-slate-900 dark:text-white">Create User Account</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Sign up to find and book parking spots</p>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide ml-1">Full Name</label>
-            <input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-neon-purple focus:ring-1 focus:ring-neon-purple focus:outline-none transition-all placeholder-gray-500" />
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Full Name</label>
+            <input
+              placeholder="Your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
+            />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide ml-1">Email</label>
-            <input placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-neon-purple focus:ring-1 focus:ring-neon-purple focus:outline-none transition-all placeholder-gray-500" />
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Email</label>
+            <input
+              type="email"
+              placeholder="email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
+            />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide ml-1">Phone</label>
-            <input placeholder="+91 9876543210" value={phone} onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-neon-purple focus:ring-1 focus:ring-neon-purple focus:outline-none transition-all placeholder-gray-500" />
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Phone</label>
+            <input
+              type="tel"
+              placeholder="+91 9876543210"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
+            />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide ml-1">Password</label>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Password</label>
             <div className="relative">
-              <input type={showPassword ? "text" : "password"} placeholder="Create Password" value={password} onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:bg-white/10 focus:border-neon-purple focus:ring-1 focus:ring-neon-purple focus:outline-none transition-all placeholder-gray-500" />
-              <button onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Create Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              >
+                {showPassword ? <FaEyeSlash size={14} /> : <FaEye size={14} />}
               </button>
             </div>
           </div>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(139,92,246,0.4)" }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={handleRegister}
           disabled={loading}
-          className="w-full mt-8 py-3.5 rounded-xl bg-gradient-to-r from-neon-purple to-violet-600 text-white font-bold text-lg shadow-lg hover:from-purple-500 hover:to-violet-500 transition-all border border-neon-purple/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full mt-6 py-3 rounded-xl bg-[#5B4DF5] hover:bg-[#4F41E5] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
         >
-          {loading ? <><div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Creating...</> : "Sign Up"}
-        </motion.button>
+          {loading ? <><div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Creating...</> : "Sign Up"}
+        </button>
 
-        <p className="text-center text-gray-400 text-sm mt-6">
+        <p className="text-center text-slate-500 dark:text-slate-400 text-xs mt-6">
           Already have an account?{" "}
-          <Link to="/login" className="text-white font-bold hover:text-neon-purple hover:underline transition-colors decoration-2 underline-offset-4">Login</Link>
+          <Link to="/login" className="text-[#5B4DF5] font-semibold hover:underline transition-colors">Login</Link>
         </p>
 
         {/* Owner registration link */}
-        <div className="mt-4 p-3 rounded-xl bg-neon-blue/5 border border-neon-blue/20">
-          <p className="text-center text-xs text-gray-400">
+        <div className="mt-4 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800/60">
+          <p className="text-center text-xs text-indigo-950 dark:text-indigo-300">
             Want to list your parking spaces?{" "}
-            <Link to="/owner/register" className="text-neon-blue hover:text-blue-400 font-bold hover:underline transition-colors underline-offset-4">
+            <Link to="/owner/register" className="text-[#5B4DF5] dark:text-indigo-400 font-bold hover:underline transition-colors">
               Become a Parking Partner →
             </Link>
           </p>

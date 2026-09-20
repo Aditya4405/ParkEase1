@@ -116,21 +116,21 @@ function DocumentUpload({ docType, file, onChange }) {
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-xs font-bold text-gray-300 uppercase tracking-wide flex items-center gap-1.5">
+        <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-1.5">
           {docType.label}
-          {docType.required && <span className="text-red-400">*</span>}
+          {docType.required && <span className="text-rose-500">*</span>}
         </label>
         {file && (
           <button
             type="button"
             onClick={() => onChange(docType.key, null)}
-            className="text-red-400 hover:text-red-300 transition-colors text-xs flex items-center gap-1"
+            className="text-rose-500 hover:text-rose-600 transition-colors text-xs flex items-center gap-1 font-medium"
           >
             <FaTimesCircle size={10} /> Remove
           </button>
         )}
       </div>
-      <p className="text-[11px] text-gray-400 mb-2">{docType.description}</p>
+      <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-2">{docType.description}</p>
 
       {!file ? (
         <div
@@ -140,13 +140,13 @@ function DocumentUpload({ docType, file, onChange }) {
           onClick={() => inputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all ${
             dragging
-              ? "border-purple-500 bg-purple-500/10"
-              : "border-white/10 hover:border-purple-500/50 hover:bg-white/5"
+              ? "border-[#5B4DF5] bg-indigo-50/50 dark:bg-indigo-950/20"
+              : "border-slate-200 dark:border-slate-700/80 hover:border-[#5B4DF5]/50 bg-slate-50/50 dark:bg-slate-900/40 hover:bg-slate-100/50 dark:hover:bg-slate-800/40"
           }`}
         >
-          <FaCloudUploadAlt className="mx-auto text-purple-400 mb-2" size={24} />
-          <p className="text-xs text-gray-300 font-medium">Drag & drop or <span className="text-purple-400 underline">browse file</span></p>
-          <p className="text-[10px] text-gray-500 mt-1">PDF, JPG, PNG • Max 10 MB</p>
+          <FaCloudUploadAlt className="mx-auto text-[#5B4DF5] mb-2" size={24} />
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Drag & drop or <span className="text-[#5B4DF5] underline">browse file</span></p>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1">PDF, JPG, PNG • Max 10 MB</p>
           <input
             ref={inputRef}
             type="file"
@@ -156,20 +156,20 @@ function DocumentUpload({ docType, file, onChange }) {
           />
         </div>
       ) : (
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60">
           {isPDF ? (
-            <FaFilePdf className="text-red-400 flex-shrink-0" size={22} />
+            <FaFilePdf className="text-rose-500 flex-shrink-0" size={22} />
           ) : (
-            <FaImage className="text-purple-400 flex-shrink-0" size={22} />
+            <FaImage className="text-[#5B4DF5] flex-shrink-0" size={22} />
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-white font-medium truncate">{file.name}</p>
-            <p className="text-[10px] text-gray-400">{sizeLabel}</p>
+            <p className="text-xs text-slate-900 dark:text-white font-medium truncate">{file.name}</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400">{sizeLabel}</p>
           </div>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="text-[11px] text-purple-300 hover:text-white px-2 py-1 bg-white/5 rounded-lg transition-colors"
+            className="text-[11px] text-[#5B4DF5] dark:text-indigo-300 hover:text-[#4F41E5] dark:hover:text-white px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors font-medium"
           >
             Replace
           </button>
@@ -434,73 +434,78 @@ export default function OwnerRegister() {
             </h2>
 
             <div>
-              <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Full Name *</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Full Name *</label>
               <input
                 type="text"
+                id="owner-reg-fullname"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Applicant Full Name"
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Email Address *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Email Address *</label>
                 <input
                   type="email"
+                  id="owner-reg-email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="owner@example.com"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Phone Number *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Phone Number *</label>
                 <input
                   type="tel"
+                  id="owner-reg-phone"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder="+91 98765 43210"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Password *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Password *</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
+                    id="owner-reg-password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder="At least 6 characters"
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm pr-10"
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                   >
                     {showPassword ? <FaEyeSlash size={14} /> : <FaEye size={14} />}
                   </button>
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Confirm Password *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Confirm Password *</label>
                 <div className="relative">
                   <input
                     type={showConfirmPw ? "text" : "password"}
+                    id="owner-reg-confirmpass"
                     value={confirmPw}
                     onChange={e => setConfirmPw(e.target.value)}
                     placeholder="Re-enter password"
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm pr-10"
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPw(!showConfirmPw)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                   >
                     {showConfirmPw ? <FaEyeSlash size={14} /> : <FaEye size={14} />}
                   </button>
@@ -513,27 +518,28 @@ export default function OwnerRegister() {
         {/* STEP 2: Business / Owner Information */}
         {step === 2 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-            <h2 className="text-base font-bold text-white border-b border-white/10 pb-2 flex items-center gap-2">
-              <FaBuilding className="text-purple-400" /> Business / Owner Information
+            <h2 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <FaBuilding className="text-[#5B4DF5]" /> Business / Owner Information
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Business / Company Name *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Business / Company Name *</label>
                 <input
                   type="text"
+                  id="owner-reg-bizname"
                   value={businessName}
                   onChange={e => setBusinessName(e.target.value)}
                   placeholder="e.g. Metro Parking Solutions Pvt Ltd"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Business Entity Type</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Business Entity Type</label>
                 <select
                   value={businessType}
                   onChange={e => setBusinessType(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 >
                   {BUSINESS_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -541,92 +547,99 @@ export default function OwnerRegister() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Business Address *</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Business Address *</label>
               <input
                 type="text"
+                id="owner-reg-address"
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="Street address, building, suite"
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">City *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">City *</label>
                 <input
                   type="text"
+                  id="owner-reg-city"
                   value={city}
                   onChange={e => setCity(e.target.value)}
                   placeholder="e.g. Mumbai"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">State *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">State *</label>
                 <input
                   type="text"
+                  id="owner-reg-state"
                   value={state}
                   onChange={e => setState(e.target.value)}
                   placeholder="e.g. Maharashtra"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">PIN Code</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">PIN Code</label>
                 <input
                   type="text"
+                  id="owner-reg-pincode"
                   value={pinCode}
                   onChange={e => setPinCode(e.target.value)}
                   placeholder="e.g. 400001"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Business Phone Number</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Business Phone Number</label>
                 <input
                   type="tel"
+                  id="owner-reg-bizphone"
                   value={contactNumber}
                   onChange={e => setContactNumber(e.target.value)}
                   placeholder="Leave blank to use personal phone"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Tax ID / PAN / GSTIN</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Tax ID / PAN / GSTIN</label>
                 <input
                   type="text"
+                  id="owner-reg-taxid"
                   value={businessIdentifier}
                   onChange={e => setBusinessIdentifier(e.target.value)}
                   placeholder="Optional identification number"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Ownership Model</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Ownership Model</label>
                 <select
                   value={ownershipType}
                   onChange={e => setOwnershipType(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 >
                   {OWNERSHIP_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Number of Facilities Managed</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Number of Facilities Managed</label>
                 <input
                   type="number"
                   min="1"
                   max="100"
+                  id="owner-reg-facilities"
                   value={numberOfLocations}
                   onChange={e => setNumberOfLocations(parseInt(e.target.value, 10) || 1)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
@@ -636,15 +649,15 @@ export default function OwnerRegister() {
         {/* STEP 3: Parking Information */}
         {step === 3 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-2">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
-                <FaParking className="text-purple-400" /> Primary Parking Location Details
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <FaParking className="text-[#5B4DF5]" /> Primary Parking Location Details
               </h2>
               {address && (
                 <button
                   type="button"
                   onClick={copyAddressToParking}
-                  className="text-xs text-purple-400 hover:text-purple-300 transition-colors underline"
+                  className="text-xs text-[#5B4DF5] hover:underline font-semibold transition-colors cursor-pointer"
                 >
                   Same as business address
                 </button>
@@ -653,97 +666,103 @@ export default function OwnerRegister() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Parking Space / Facility Name *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Parking Space / Facility Name *</label>
                 <input
                   type="text"
+                  id="owner-reg-lotname"
                   value={parkingSpaceName}
                   onChange={e => setParkingSpaceName(e.target.value)}
                   placeholder="e.g. Downtown Central Parking"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Approximate Slots *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Approximate Slots *</label>
                 <input
                   type="number"
                   min="1"
+                  id="owner-reg-slots"
                   value={approxSlots}
                   onChange={e => setApproxSlots(e.target.value)}
                   placeholder="e.g. 50"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Parking Facility Address</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Parking Facility Address</label>
               <input
                 type="text"
+                id="owner-reg-lotaddress"
                 value={parkingAddress}
                 onChange={e => setParkingAddress(e.target.value)}
                 placeholder="Detailed street address of parking lot"
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">City</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">City</label>
                 <input
                   type="text"
+                  id="owner-reg-lotcity"
                   value={parkingCity}
                   onChange={e => setParkingCity(e.target.value)}
                   placeholder="City"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">State</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">State</label>
                 <input
                   type="text"
+                  id="owner-reg-lotstate"
                   value={parkingState}
                   onChange={e => setParkingState(e.target.value)}
                   placeholder="State"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">PIN Code</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">PIN Code</label>
                 <input
                   type="text"
+                  id="owner-reg-lotpincode"
                   value={parkingPinCode}
                   onChange={e => setParkingPinCode(e.target.value)}
                   placeholder="PIN Code"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Parking Facility Type</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Parking Facility Type</label>
                 <select
                   value={parkingType}
                   onChange={e => setParkingType(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 >
                   {PARKING_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-300 mb-1.5 uppercase tracking-wide">Vehicles Supported</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wide">Vehicles Supported</label>
                 <select
                   value={vehicleTypesSupported}
                   onChange={e => setVehicleTypesSupported(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 text-slate-900 dark:text-white focus:outline-none focus:border-[#5B4DF5] focus:ring-2 focus:ring-[#5B4DF5]/15 transition-all text-sm font-medium"
                 >
                   {VEHICLE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-gray-300 flex items-start gap-2.5 mt-2">
-              <FaInfoCircle className="text-purple-400 flex-shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800/60 text-xs text-indigo-950 dark:text-indigo-200 flex items-start gap-2.5 mt-2">
+              <FaInfoCircle className="text-[#5B4DF5] flex-shrink-0 mt-0.5" />
               <span>
                 You can configure specific parking slots, pricing tiers, and operating hours in the Owner Dashboard once your partner account is approved.
               </span>
@@ -754,10 +773,10 @@ export default function OwnerRegister() {
         {/* STEP 4: Verification Documents */}
         {step === 4 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-            <h2 className="text-base font-bold text-white border-b border-white/10 pb-2 flex items-center gap-2">
-              <FaIdCard className="text-purple-400" /> Verification Documents
+            <h2 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <FaIdCard className="text-[#5B4DF5]" /> Verification Documents
             </h2>
-            <p className="text-xs text-gray-400 mb-4">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
               Please upload required documents for administrator verification. Only PDF, JPG, and PNG files up to 10MB are permitted.
             </p>
 
@@ -775,68 +794,68 @@ export default function OwnerRegister() {
         {/* STEP 5: Review & Submit */}
         {step === 5 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
-            <h2 className="text-base font-bold text-white border-b border-white/10 pb-2 flex items-center gap-2">
-              <FaCheckCircle className="text-emerald-400" /> Review Your Application
+            <h2 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <FaCheckCircle className="text-emerald-500" /> Review Your Application
             </h2>
 
             {/* Personal Summary */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-purple-300 uppercase tracking-wide">Personal Details</span>
-                <button type="button" onClick={() => setStep(1)} className="text-[11px] text-gray-400 hover:text-white underline">Edit</button>
+                <span className="text-xs font-bold text-[#5B4DF5] dark:text-indigo-400 uppercase tracking-wide">Personal Details</span>
+                <button type="button" onClick={() => setStep(1)} className="text-[11px] text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline font-semibold cursor-pointer">Edit</button>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-gray-500">Name:</span> <span className="text-white font-medium">{name}</span></div>
-                <div><span className="text-gray-500">Email:</span> <span className="text-white font-medium">{email}</span></div>
-                <div><span className="text-gray-500">Phone:</span> <span className="text-white font-medium">{phone}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Name:</span> <span className="text-slate-900 dark:text-white font-semibold">{name}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Email:</span> <span className="text-slate-900 dark:text-white font-semibold">{email}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Phone:</span> <span className="text-slate-900 dark:text-white font-semibold">{phone}</span></div>
               </div>
             </div>
 
             {/* Business Summary */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-purple-300 uppercase tracking-wide">Business Details</span>
-                <button type="button" onClick={() => setStep(2)} className="text-[11px] text-gray-400 hover:text-white underline">Edit</button>
+                <span className="text-xs font-bold text-[#5B4DF5] dark:text-indigo-400 uppercase tracking-wide">Business Details</span>
+                <button type="button" onClick={() => setStep(2)} className="text-[11px] text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline font-semibold cursor-pointer">Edit</button>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-gray-500">Business:</span> <span className="text-white font-medium">{businessName}</span></div>
-                <div><span className="text-gray-500">Type:</span> <span className="text-white font-medium">{businessType}</span></div>
-                <div className="col-span-2"><span className="text-gray-500">Address:</span> <span className="text-white font-medium">{address}, {city}, {state} - {pinCode}</span></div>
-                {businessIdentifier && <div><span className="text-gray-500">Tax/ID:</span> <span className="text-white font-medium">{businessIdentifier}</span></div>}
-                <div><span className="text-gray-500">Ownership:</span> <span className="text-white font-medium">{ownershipType}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Business:</span> <span className="text-slate-900 dark:text-white font-semibold">{businessName}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Type:</span> <span className="text-slate-900 dark:text-white font-semibold">{businessType}</span></div>
+                <div className="col-span-2"><span className="text-slate-500 dark:text-slate-400">Address:</span> <span className="text-slate-900 dark:text-white font-semibold">{address}, {city}, {state} - {pinCode}</span></div>
+                {businessIdentifier && <div><span className="text-slate-500 dark:text-slate-400">Tax/ID:</span> <span className="text-slate-900 dark:text-white font-semibold">{businessIdentifier}</span></div>}
+                <div><span className="text-slate-500 dark:text-slate-400">Ownership:</span> <span className="text-slate-900 dark:text-white font-semibold">{ownershipType}</span></div>
               </div>
             </div>
 
             {/* Parking Summary */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-purple-300 uppercase tracking-wide">Parking Facility Details</span>
-                <button type="button" onClick={() => setStep(3)} className="text-[11px] text-gray-400 hover:text-white underline">Edit</button>
+                <span className="text-xs font-bold text-[#5B4DF5] dark:text-indigo-400 uppercase tracking-wide">Parking Facility Details</span>
+                <button type="button" onClick={() => setStep(3)} className="text-[11px] text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline font-semibold cursor-pointer">Edit</button>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-gray-500">Space Name:</span> <span className="text-white font-medium">{parkingSpaceName}</span></div>
-                <div><span className="text-gray-500">Approx Slots:</span> <span className="text-white font-medium">{approxSlots} slots</span></div>
-                <div><span className="text-gray-500">Facility Type:</span> <span className="text-white font-medium">{parkingType}</span></div>
-                <div><span className="text-gray-500">Vehicles:</span> <span className="text-white font-medium">{vehicleTypesSupported}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Space Name:</span> <span className="text-slate-900 dark:text-white font-semibold">{parkingSpaceName}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Approx Slots:</span> <span className="text-slate-900 dark:text-white font-semibold">{approxSlots} slots</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Facility Type:</span> <span className="text-slate-900 dark:text-white font-semibold">{parkingType}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Vehicles:</span> <span className="text-slate-900 dark:text-white font-semibold">{vehicleTypesSupported}</span></div>
               </div>
             </div>
 
             {/* Documents Summary */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-purple-300 uppercase tracking-wide">Verification Documents</span>
-                <button type="button" onClick={() => setStep(4)} className="text-[11px] text-gray-400 hover:text-white underline">Edit</button>
+                <span className="text-xs font-bold text-[#5B4DF5] dark:text-indigo-400 uppercase tracking-wide">Verification Documents</span>
+                <button type="button" onClick={() => setStep(4)} className="text-[11px] text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline font-semibold cursor-pointer">Edit</button>
               </div>
               <div className="space-y-1.5 text-xs">
                 {DOCUMENT_TYPES.map(dt => (
                   <div key={dt.key} className="flex items-center justify-between">
-                    <span className="text-gray-400">{dt.label}:</span>
+                    <span className="text-slate-500 dark:text-slate-400">{dt.label}:</span>
                     {documents[dt.key] ? (
-                      <span className="text-emerald-400 flex items-center gap-1 font-medium">
+                      <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
                         <FaCheckCircle size={10} /> {documents[dt.key].name}
                       </span>
                     ) : (
-                      <span className="text-gray-600 text-[11px]">Not uploaded (Optional)</span>
+                      <span className="text-slate-400 dark:text-slate-500 text-[11px]">Not uploaded (Optional)</span>
                     )}
                   </div>
                 ))}
@@ -844,10 +863,10 @@ export default function OwnerRegister() {
             </div>
 
             {/* Submission Notice */}
-            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-              <FaShieldAlt className="text-amber-400 flex-shrink-0 mt-0.5" size={16} />
-              <div className="text-xs text-amber-200/90 leading-relaxed">
-                <p className="font-bold text-amber-300 mb-0.5">Admin Review Notice</p>
+            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex items-start gap-3">
+              <FaShieldAlt className="text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" size={16} />
+              <div className="text-xs text-amber-800 dark:text-amber-200/90 leading-relaxed">
+                <p className="font-bold text-amber-900 dark:text-amber-300 mb-0.5">Admin Review Notice</p>
                 After submission, your application will be reviewed by a ParkEase administrator. You will receive an application reference number to check review progress. Owner Dashboard access will only be granted upon successful approval.
               </div>
             </div>
@@ -855,13 +874,13 @@ export default function OwnerRegister() {
         )}
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-white/10">
+        <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           {step > 1 ? (
             <button
               type="button"
               onClick={handleBack}
               disabled={loading}
-              className="px-5 py-2.5 rounded-xl border border-white/10 text-gray-300 hover:bg-white/5 hover:text-white transition-all text-xs font-bold flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-xs font-bold flex items-center gap-2 cursor-pointer"
             >
               <FaArrowLeft size={10} /> Back
             </button>
@@ -874,7 +893,7 @@ export default function OwnerRegister() {
               type="button"
               id="owner-reg-next-btn"
               onClick={handleNext}
-              className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs tracking-wide shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2"
+              className="px-6 py-2.5 rounded-xl bg-[#5B4DF5] hover:bg-[#4F41E5] text-white font-bold text-xs tracking-wide shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>Continue</span>
               <FaArrowRight size={10} />
@@ -885,7 +904,7 @@ export default function OwnerRegister() {
               id="owner-reg-submit-btn"
               disabled={loading}
               onClick={handleSubmit}
-              className="px-8 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs tracking-wide shadow-lg shadow-purple-600/30 transition-all disabled:opacity-50 flex items-center gap-2"
+              className="px-8 py-3 rounded-xl bg-[#5B4DF5] hover:bg-[#4F41E5] text-white font-bold text-xs tracking-wide shadow-md hover:shadow-lg transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
@@ -904,9 +923,9 @@ export default function OwnerRegister() {
 
         {/* Existing account link */}
         <div className="mt-6 text-center">
-          <p className="text-gray-500 text-xs">
+          <p className="text-slate-500 dark:text-slate-400 text-xs">
             Already registered?{" "}
-            <Link to="/login" className="text-neon-blue hover:text-white font-medium transition-colors">
+            <Link to="/login" className="text-[#5B4DF5] hover:underline font-semibold transition-colors">
               Log In
             </Link>
           </p>

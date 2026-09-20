@@ -49,51 +49,51 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.85, opacity: 0, y: 30 }}
                         transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                        className="relative bg-[#0f1629] border border-white/10 rounded-2xl shadow-2xl w-full max-w-md z-10 overflow-hidden"
+                        className="relative bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden transition-colors duration-200"
                     >
                         {/* Top gradient bar */}
-                        <div className="h-1 w-full bg-gradient-to-r from-neon-blue via-neon-purple to-neon-blue" />
+                        <div className="h-1.5 w-full bg-[#5B4DF5]" />
 
-                        <div className="p-7">
+                        <div className="p-6 md:p-7">
                             {/* Header */}
                             <div className="flex items-start justify-between mb-6">
                                 <div>
-                                    <h3 className="text-2xl font-bold text-white">
+                                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
                                         Booking Summary
                                     </h3>
-                                    <p className="text-gray-400 text-sm mt-1">
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5">
                                         Review your booking before payment
                                     </p>
                                 </div>
                                 <button
                                     onClick={onClose}
-                                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
+                                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                                 >
-                                    <FaTimes size={18} />
+                                    <FaTimes size={16} />
                                 </button>
                             </div>
 
                             {/* Info Grid */}
-                            <div className="bg-white/5 rounded-xl border border-white/10 divide-y divide-white/5 mb-6">
+                            <div className="bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 mb-6">
                                 <InfoRow
-                                    icon={<FaParking className="text-neon-blue" />}
+                                    icon={<FaParking className="text-[#5B4DF5]" />}
                                     label="Parking"
                                     value={parkingName}
                                 />
                                 <InfoRow
-                                    icon={<span className="text-neon-purple font-bold text-sm">#</span>}
+                                    icon={<span className="text-[#5B4DF5] font-bold text-sm">#</span>}
                                     label="Slot ID"
                                     value={
-                                        <span className="font-mono text-neon-purple font-bold bg-neon-purple/10 px-2 py-0.5 rounded border border-neon-purple/20">
+                                        <span className="font-mono text-[#5B4DF5] dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-800">
                                             {slot.id}
                                         </span>
                                     }
                                 />
                                 <InfoRow
-                                    icon={<FaRupeeSign className="text-neon-green" />}
+                                    icon={<FaRupeeSign className="text-emerald-600 dark:text-emerald-400" />}
                                     label="Rate per hour"
                                     value={
-                                        <span className="text-neon-green font-bold">
+                                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                                             ₹{RATE_PER_HOUR}/hr
                                         </span>
                                     }
@@ -102,8 +102,8 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
 
                             {/* Duration Selector */}
                             <div className="mb-6">
-                                <label className="flex items-center gap-2 text-gray-300 text-sm font-semibold mb-3">
-                                    <FaClock className="text-neon-blue" />
+                                <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 text-sm font-semibold mb-3">
+                                    <FaClock className="text-[#5B4DF5]" />
                                     Select Duration
                                 </label>
                                 <div className="grid grid-cols-4 gap-2">
@@ -111,9 +111,9 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
                                         <button
                                             key={hr}
                                             onClick={() => setDuration(hr)}
-                                            className={`py-2.5 rounded-lg text-sm font-bold transition-all border ${duration === hr
-                                                    ? "bg-neon-blue text-white border-neon-blue shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-                                                    : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                                            className={`py-2.5 rounded-xl text-sm font-bold transition-all border cursor-pointer ${duration === hr
+                                                    ? "bg-[#5B4DF5] text-white border-[#5B4DF5] shadow-md"
+                                                    : "bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                                                 }`}
                                         >
                                             {hr}h
@@ -123,18 +123,18 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
                             </div>
 
                             {/* Total Amount */}
-                            <div className="bg-gradient-to-r from-neon-green/10 to-transparent border border-neon-green/20 rounded-xl p-4 mb-6 flex justify-between items-center">
-                                <span className="text-gray-300 font-semibold">Total Amount</span>
-                                <span className="text-3xl font-black text-neon-green">
+                            <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/60 rounded-2xl p-4 mb-6 flex justify-between items-center">
+                                <span className="text-emerald-900 dark:text-emerald-200 font-semibold text-sm">Total Amount</span>
+                                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
                                     ₹{totalAmount}
                                 </span>
                             </div>
 
                             {/* Cancellation Policy */}
-                            <div className="flex items-start gap-2 mb-6 p-3 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
-                                <FaInfoCircle className="text-yellow-500 mt-0.5 shrink-0" />
-                                <p className="text-xs text-yellow-200/70 leading-relaxed">
-                                    <span className="font-bold text-yellow-400">Cancellation Policy:</span>{" "}
+                            <div className="flex items-start gap-2 mb-6 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-xl">
+                                <FaInfoCircle className="text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                                <p className="text-xs text-amber-800 dark:text-amber-200/90 leading-relaxed">
+                                    <span className="font-bold text-amber-900 dark:text-amber-300">Cancellation Policy:</span>{" "}
                                     Free cancellation within 15 minutes of booking. After that, a
                                     cancellation fee of ₹20 applies.
                                 </p>
@@ -144,13 +144,13 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
                             <div className="flex gap-3">
                                 <button
                                     onClick={onClose}
-                                    className="flex-1 py-3.5 rounded-xl font-bold text-gray-300 border border-white/10 hover:border-white/30 hover:text-white hover:bg-white/5 transition-all"
+                                    className="flex-1 py-3 rounded-xl font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-sm cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleProceedToPay}
-                                    className="flex-1 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-neon-blue to-neon-purple hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all flex items-center justify-center gap-2"
+                                    className="flex-1 py-3 rounded-xl font-bold text-white bg-[#5B4DF5] hover:bg-[#4F41E5] shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm cursor-pointer"
                                 >
                                     <FaCreditCard />
                                     Proceed to Pay
@@ -167,11 +167,11 @@ export default function BookingSummaryModal({ slot, parkingName, onClose }) {
 function InfoRow({ icon, label, value }) {
     return (
         <div className="flex items-center justify-between px-4 py-3">
-            <span className="flex items-center gap-2 text-gray-400 text-sm">
+            <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
                 {icon}
                 {label}
             </span>
-            <span className="text-white font-semibold text-sm">{value}</span>
+            <span className="text-slate-900 dark:text-white font-semibold text-sm">{value}</span>
         </div>
     );
 }
